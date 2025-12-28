@@ -1,0 +1,101 @@
+/**
+ * =================================================================
+ * GSAP SCROLL ANIMATION STYLES
+ * =================================================================
+ * 
+ * Base styles for scroll-triggered animations.
+ * Uses only transform + opacity for optimal performance.
+ * 
+ * =================================================================
+ */
+
+/* =================================================================
+   PREVENT FLASH OF UNSTYLED CONTENT (FOUC)
+   Elements start hidden, GSAP will reveal them
+   ================================================================= */
+
+.section-heading,
+.section-text,
+.gsap-fade-up,
+.gsap-fade-left,
+.gsap-fade-right,
+.gsap-scale {
+    /* Initial hidden state - GSAP will animate these */
+    will-change: transform, opacity;
+}
+
+/* =================================================================
+   BACKGROUND REVEAL
+   Wipe-in effect for section backgrounds
+   ================================================================= */
+
+.bg-reveal {
+    will-change: clip-path;
+}
+
+/* =================================================================
+   PERFORMANCE OPTIMIZATIONS
+   Promote elements to their own layer for smooth animations
+   ================================================================= */
+
+.gsap-animated {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* =================================================================
+   RESPONSIVE ADJUSTMENTS
+   Reduce motion on devices that prefer it
+   ================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .section-heading,
+    .section-text,
+    .gsap-fade-up,
+    .gsap-fade-left,
+    .gsap-fade-right,
+    .gsap-scale,
+    .bg-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        clip-path: none !important;
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* =================================================================
+   UTILITY CLASSES FOR DELAYS
+   Add these alongside animation classes for custom timing
+   ================================================================= */
+
+.gsap-delay-100 { --gsap-delay: 0.1s; }
+.gsap-delay-200 { --gsap-delay: 0.2s; }
+.gsap-delay-300 { --gsap-delay: 0.3s; }
+.gsap-delay-400 { --gsap-delay: 0.4s; }
+.gsap-delay-500 { --gsap-delay: 0.5s; }
+
+/* =================================================================
+   EXAMPLE SECTION STYLES
+   Use these as reference for your sections
+   ================================================================= */
+
+/*
+.my-section {
+    padding: 80px 0;
+    overflow: hidden;
+}
+
+.my-section .section-heading {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.my-section .section-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #666;
+    max-width: 600px;
+}
+*/
