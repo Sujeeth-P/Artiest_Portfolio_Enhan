@@ -66,7 +66,7 @@ const GuidedGallery = () => {
                 start: 'top top',
                 end: () => `+=${totalScroll}`,
                 pin: true,
-                scrub: 0.8,
+                scrub: 0.5, // Lower scrub value for more responsive scrolling
                 onUpdate: (self) => {
                     const progress = self.progress;
                     const newIndex = Math.min(
@@ -238,7 +238,7 @@ const GuidedGallery = () => {
                 .progress-fill {
                     height: 100%;
                     background: linear-gradient(90deg, #b8963f, #d4af5a);
-                    transition: width 0.5s ease;
+                    transition: width 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
                 }
 
                 .progress-label {
@@ -268,7 +268,7 @@ const GuidedGallery = () => {
                     height: 100%;
                     position: absolute;
                     transform-style: preserve-3d;
-                    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+                    /* No CSS transition - GSAP scrub handles this smoothly */
                 }
 
                 .carousel-card {
@@ -280,7 +280,6 @@ const GuidedGallery = () => {
                     margin-left: -140px;
                     margin-top: -190px;
                     backface-visibility: hidden;
-                    transition: all 0.5s ease;
                 }
 
                 .carousel-card .card-inner {
@@ -289,14 +288,19 @@ const GuidedGallery = () => {
                     border-radius: 16px;
                     overflow: hidden;
                     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-                    transition: all 0.4s ease;
-                    opacity: 0.6;
-                    filter: brightness(0.7);
+                    transition: opacity 0.4s ease, 
+                                filter 0.4s ease, 
+                                box-shadow 0.4s ease,
+                                transform 0.4s ease;
+                    opacity: 0.5;
+                    filter: brightness(0.65);
+                    transform: scale(0.92);
                 }
 
                 .carousel-card.active .card-inner {
                     opacity: 1;
                     filter: brightness(1);
+                    transform: scale(1);
                     box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
                 }
 
