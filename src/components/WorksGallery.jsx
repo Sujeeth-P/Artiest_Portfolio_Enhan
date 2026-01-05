@@ -269,39 +269,176 @@ const WorksGallery = ({ onViewArtwork }) => {
                     background: #fcf7e7;
                 }
 
-                /* Header Section - Vertical Scroll Entry */
+                /* Header Section - Modern Design */
                 .works-header {
-                    padding: 120px 60px 60px;
+                    padding: 100px 40px 80px;
                     text-align: center;
+                    position: relative;
+                    background: linear-gradient(180deg, #fcf7e7 0%, #f8f3e3 100%);
                 }
 
                 .header-content {
-                    max-width: 600px;
+                    max-width: 700px;
                     margin: 0 auto;
+                    position: relative;
+                }
+
+                /* Decorative top element */
+                .header-decoration {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 15px;
+                    margin-bottom: 25px;
+                }
+
+                .decoration-line {
+                    width: 60px;
+                    height: 1px;
+                    background: linear-gradient(90deg, transparent 0%, #c9a961 50%, transparent 100%);
+                }
+
+                .decoration-diamond {
+                    color: #c9a961;
+                    font-size: 0.7rem;
+                    animation: pulse-diamond 2s ease-in-out infinite;
+                }
+
+                @keyframes pulse-diamond {
+                    0%, 100% { opacity: 0.6; transform: scale(1); }
+                    50% { opacity: 1; transform: scale(1.2); }
                 }
 
                 .works-label {
                     display: inline-block;
-                    font-size: 0.75rem;
+                    font-size: 0.7rem;
                     font-weight: 600;
                     text-transform: uppercase;
-                    letter-spacing: 4px;
+                    letter-spacing: 5px;
                     color: #b8963f;
-                    margin-bottom: 15px;
+                    margin-bottom: 20px;
+                    padding: 8px 20px;
+                    border: 1px solid rgba(185, 150, 63, 0.3);
+                    border-radius: 30px;
+                    background: rgba(185, 150, 63, 0.05);
                 }
 
                 .works-title {
                     font-family: 'Cormorant Garamond', serif;
-                    font-size: clamp(2.5rem, 5vw, 4rem);
-                    font-weight: 500;
+                    font-size: clamp(3rem, 7vw, 5rem);
+                    font-weight: 400;
                     color: #1a1a1a;
-                    margin: 0 0 15px 0;
+                    margin: 0 0 20px 0;
+                    line-height: 1.1;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0;
+                }
+
+                .title-accent {
+                    color: #c9a961;
+                    font-weight: 300;
+                    font-style: italic;
+                    font-size: 0.7em;
+                    letter-spacing: 8px;
+                }
+
+                .title-main {
+                    letter-spacing: 12px;
+                    font-weight: 500;
+                }
+
+                /* Decorative underline */
+                .title-underline {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    margin-bottom: 35px;
+                }
+
+                .underline-wing {
+                    width: 50px;
+                    height: 1px;
+                    background: #c9a961;
+                }
+
+                .underline-wing.left {
+                    background: linear-gradient(90deg, transparent, #c9a961);
+                }
+
+                .underline-wing.right {
+                    background: linear-gradient(90deg, #c9a961, transparent);
+                }
+
+                .underline-center {
+                    width: 8px;
+                    height: 8px;
+                    background: #c9a961;
+                    transform: rotate(45deg);
+                }
+
+                /* Description text */
+                .works-description {
+                    max-width: 550px;
+                    margin: 0 auto 40px;
                 }
 
                 .works-subtitle {
-                    font-size: 1.05rem;
+                    font-size: 1rem;
                     color: #6b6b6b;
-                    margin: 0;
+                    margin: 0 0 12px;
+                    line-height: 1.8;
+                }
+
+                .works-subtitle.main-text {
+                    font-size: 1.2rem;
+                    color: #4a4a4a;
+                    font-weight: 500;
+                    margin-bottom: 15px;
+                }
+
+                .works-subtitle em {
+                    color: #c9a961;
+                    font-style: italic;
+                }
+
+                .works-cta-text {
+                    font-size: 0.95rem;
+                    color: #888;
+                    margin-top: 20px;
+                }
+
+                .works-cta-text .highlight {
+                    color: #b8963f;
+                    font-weight: 500;
+                }
+
+                /* Scroll indicator */
+                .header-scroll-hint {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 10px;
+                    margin-top: 30px;
+                }
+
+                .scroll-text {
+                    font-size: 0.75rem;
+                    text-transform: uppercase;
+                    letter-spacing: 3px;
+                    color: #b8963f;
+                }
+
+                .scroll-arrow {
+                    color: #c9a961;
+                    animation: bounce-arrow 2s ease-in-out infinite;
+                }
+
+                @keyframes bounce-arrow {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(8px); }
                 }
 
                 /* Pinned Container */
