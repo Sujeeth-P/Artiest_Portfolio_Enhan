@@ -1,429 +1,509 @@
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, {
+    useEffect,
+    useRef,
+    useState,
+    useMemo,
+    useCallback,
+} from "react";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger);
+function calculateGap(width) {
+    const minWidth = 1024;
+    const maxWidth = 1456;
+    const minGap = 60;
+    const maxGap = 100;
+    if (width <= minWidth) return minGap;
+    if (width >= maxWidth)
+        return Math.max(minGap, maxGap + 0.06018 * (width - maxWidth));
+    return minGap + (maxGap - minGap) * ((width - minWidth) / (maxWidth - minWidth));
+}
 
 const GuidedGallery = () => {
-    const sectionRef = useRef(null);
-    const carouselRef = useRef(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [rotationY, setRotationY] = useState(0);
-
     // Artworks data with descriptions
     const artworks = [
         {
-            id: 1,
-            image: '/assets/gallery/paons-et-pavots.jpg',
-            title: 'Paons et Pavots',
-            category: 'Nature',
-            description: 'A stunning portrayal of peacocks amidst vibrant poppies, showcasing the harmonious dance between wildlife and flora.'
+            quote: "A stunning portrayal of peacocks amidst vibrant poppies, showcasing the harmonious dance between wildlife and flora.",
+            name: "Paons et Pavots",
+            designation: "Nature Collection",
+            src: "/assets/gallery/paons-et-pavots.jpg",
         },
         {
-            id: 2,
-            image: '/assets/gallery/cacatoës-et-magnolia.jpg',
-            title: 'Cacatoës et Magnolia',
-            category: 'Botanical',
-            description: 'Elegant cockatoos perched among delicate magnolia blooms, capturing the gentle beauty of nature.'
+            quote: "Elegant cockatoos perched among delicate magnolia blooms, capturing the gentle beauty of nature's finest moments.",
+            name: "Cacatoës et Magnolia",
+            designation: "Botanical Collection",
+            src: "/assets/gallery/cacatoës-et-magnolia.jpg",
         },
         {
-            id: 3,
-            image: '/assets/gallery/cygne-sauvage.jpg',
-            title: 'Cygne Sauvage',
-            category: 'Wildlife',
-            description: 'The wild swan in its natural habitat, expressing grace and freedom through fluid brushstrokes.'
+            quote: "The wild swan in its natural habitat, expressing grace and freedom through fluid brushstrokes and ethereal colors.",
+            name: "Cygne Sauvage",
+            designation: "Wildlife Collection",
+            src: "/assets/gallery/cygne-sauvage.jpg",
         },
         {
-            id: 4,
-            image: '/assets/gallery/nénuphar.jpg',
-            title: 'Nénuphar',
-            category: 'Botanical',
-            description: 'Water lilies floating serenely on still waters. Inspired by impressionist masters.'
+            quote: "Water lilies floating serenely on still waters, inspired by impressionist masters and the tranquility of nature.",
+            name: "Nénuphar",
+            designation: "Botanical Collection",
+            src: "/assets/gallery/nénuphar.jpg",
         },
         {
-            id: 5,
-            image: '/assets/aigles.jpg',
-            title: 'Aigles Majestueux',
-            category: 'Nature',
-            description: 'Majestic eagles captured in their powerful glory with bold compositions and dynamic lines.'
-        }
+            quote: "Majestic eagles captured in their powerful glory with bold compositions and dynamic lines that command attention.",
+            name: "Aigles Majestueux",
+            designation: "Nature Collection",
+            src: "/assets/aigles.jpg",
+        },
     ];
 
-    const currentArtwork = artworks[currentIndex];
-    const anglePerCard = 360 / artworks.length;
-    const radius = 320; // Distance from center
+    // State
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [hoverPrev, setHoverPrev] = useState(false);
+    const [hoverNext, setHoverNext] = useState(false);
+    const [containerWidth, setContainerWidth] = useState(1200);
 
-    // Scroll-driven horizontal rotation
+    const imageContainerRef = useRef(null);
+    const autoplayIntervalRef = useRef(null);
+
+    const artworksLength = useMemo(() => artworks.length, [artworks]);
+    const activeArtwork = useMemo(
+        () => artworks[activeIndex],
+        [activeIndex, artworks]
+    );
+
+    // Responsive gap calculation
     useEffect(() => {
-        const section = sectionRef.current;
-        if (!section) return;
+        function handleResize() {
+            if (imageContainerRef.current) {
+                setContainerWidth(imageContainerRef.current.offsetWidth);
+            }
+        }
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
-        const ctx = gsap.context(() => {
-            const totalScroll = artworks.length * window.innerHeight * 0.6;
+    // Autoplay
+    useEffect(() => {
+        autoplayIntervalRef.current = setInterval(() => {
+            setActiveIndex((prev) => (prev + 1) % artworksLength);
+        }, 6000);
+        return () => {
+            if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
+        };
+    }, [artworksLength]);
 
-            ScrollTrigger.create({
-                trigger: section,
-                start: 'top top',
-                end: () => `+=${totalScroll}`,
-                pin: true,
-                scrub: 0.5, // Lower scrub value for more responsive scrolling
-                onUpdate: (self) => {
-                    const progress = self.progress;
-                    const newIndex = Math.min(
-                        Math.floor(progress * artworks.length),
-                        artworks.length - 1
-                    );
+    // Keyboard navigation
+    useEffect(() => {
+        const handleKey = (e) => {
+            if (e.key === "ArrowLeft") handlePrev();
+            if (e.key === "ArrowRight") handleNext();
+        };
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+        // eslint-disable-next-line
+    }, [activeIndex, artworksLength]);
 
-                    // Rotate around Y-axis (horizontal circular motion)
-                    const newRotation = progress * 360;
-                    setRotationY(newRotation);
-                    setCurrentIndex(newIndex);
-                }
-            });
+    // Navigation handlers
+    const handleNext = useCallback(() => {
+        setActiveIndex((prev) => (prev + 1) % artworksLength);
+        if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
+    }, [artworksLength]);
 
-        }, section);
+    const handlePrev = useCallback(() => {
+        setActiveIndex((prev) => (prev - 1 + artworksLength) % artworksLength);
+        if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
+    }, [artworksLength]);
 
-        return () => ctx.revert();
-    }, [artworks.length]);
+    // Compute transforms for each image (always show 3: left, center, right)
+    function getImageStyle(index) {
+        const gap = calculateGap(containerWidth);
+        const maxStickUp = gap * 0.7;
+        const isActive = index === activeIndex;
+        const isLeft = (activeIndex - 1 + artworksLength) % artworksLength === index;
+        const isRight = (activeIndex + 1) % artworksLength === index;
+
+        if (isActive) {
+            return {
+                zIndex: 3,
+                opacity: 1,
+                pointerEvents: "auto",
+                transform: `translateX(0px) translateY(0px) scale(1) rotateY(0deg)`,
+                filter: 'brightness(1)',
+                transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+            };
+        }
+        if (isLeft) {
+            return {
+                zIndex: 2,
+                opacity: 0.85,
+                pointerEvents: "auto",
+                transform: `translateX(-${gap}px) translateY(-${maxStickUp}px) scale(0.82) rotateY(18deg)`,
+                filter: 'brightness(0.7)',
+                transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+            };
+        }
+        if (isRight) {
+            return {
+                zIndex: 2,
+                opacity: 0.85,
+                pointerEvents: "auto",
+                transform: `translateX(${gap}px) translateY(-${maxStickUp}px) scale(0.82) rotateY(-18deg)`,
+                filter: 'brightness(0.7)',
+                transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+            };
+        }
+        // Hide all other images
+        return {
+            zIndex: 1,
+            opacity: 0,
+            pointerEvents: "none",
+            transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+        };
+    }
+
+    // Framer Motion variants for quote
+    const quoteVariants = {
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: -20 },
+    };
 
     return (
-        <section ref={sectionRef} className="guided-gallery">
-            <div className="gallery-container">
-                {/* Left Side - Explanation Panel */}
-                <div className="explanation-panel">
-                    <div className="explanation-content">
-                        <span className="artwork-number">
-                            {String(currentIndex + 1).padStart(2, '0')}
-                        </span>
-                        <span className="artwork-category">{currentArtwork.category}</span>
-                        <h2 className="artwork-title">{currentArtwork.title}</h2>
-                        <p className="artwork-description">{currentArtwork.description}</p>
+        <section className="guided-gallery-section" id="gallery">
+            <div className="guided-gallery-container">
+                <div className="guided-gallery-grid">
+                    {/* Images - Circular Effect */}
+                    <div className="guided-image-container" ref={imageContainerRef}>
+                        {artworks.map((artwork, index) => (
+                            <img
+                                key={artwork.src}
+                                src={artwork.src}
+                                alt={artwork.name}
+                                className="guided-artwork-image"
+                                data-index={index}
+                                style={getImageStyle(index)}
+                            />
+                        ))}
+                    </div>
 
-                        {/* Progress bar */}
-                        <div className="progress-section">
-                            <div className="progress-bar">
+                    {/* Content */}
+                    <div className="guided-content">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeIndex}
+                                variants={quoteVariants}
+                                initial="initial"
+                                animate="animate"
+                                exit="exit"
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className="guided-content-inner"
+                            >
+                                <span className="guided-number">
+                                    {String(activeIndex + 1).padStart(2, '0')}
+                                </span>
+                                <p className="guided-designation">
+                                    {activeArtwork.designation}
+                                </p>
+                                <h3 className="guided-name">
+                                    {activeArtwork.name}
+                                </h3>
+                                <motion.p className="guided-quote">
+                                    {activeArtwork.quote.split(" ").map((word, i) => (
+                                        <motion.span
+                                            key={i}
+                                            initial={{
+                                                filter: "blur(10px)",
+                                                opacity: 0,
+                                                y: 5,
+                                            }}
+                                            animate={{
+                                                filter: "blur(0px)",
+                                                opacity: 1,
+                                                y: 0,
+                                            }}
+                                            transition={{
+                                                duration: 0.22,
+                                                ease: "easeInOut",
+                                                delay: 0.025 * i,
+                                            }}
+                                            style={{ display: "inline-block" }}
+                                        >
+                                            {word}&nbsp;
+                                        </motion.span>
+                                    ))}
+                                </motion.p>
+                            </motion.div>
+                        </AnimatePresence>
+
+                        {/* Navigation */}
+                        <div className="guided-navigation">
+                            <div className="guided-arrow-buttons">
+                                <button
+                                    className="guided-arrow-button"
+                                    onClick={handlePrev}
+                                    style={{
+                                        backgroundColor: hoverPrev ? '#d4af5a' : '#b8963f',
+                                    }}
+                                    onMouseEnter={() => setHoverPrev(true)}
+                                    onMouseLeave={() => setHoverPrev(false)}
+                                    aria-label="Previous artwork"
+                                >
+                                    <FaArrowLeft size={18} color="#fcf7e7" />
+                                </button>
+                                <button
+                                    className="guided-arrow-button"
+                                    onClick={handleNext}
+                                    style={{
+                                        backgroundColor: hoverNext ? '#d4af5a' : '#b8963f',
+                                    }}
+                                    onMouseEnter={() => setHoverNext(true)}
+                                    onMouseLeave={() => setHoverNext(false)}
+                                    aria-label="Next artwork"
+                                >
+                                    <FaArrowRight size={18} color="#fcf7e7" />
+                                </button>
+                            </div>
+                            <div className="guided-progress">
                                 <div
-                                    className="progress-fill"
-                                    style={{ width: `${((currentIndex + 1) / artworks.length) * 100}%` }}
+                                    className="guided-progress-bar"
+                                    style={{ width: `${((activeIndex + 1) / artworksLength) * 100}%` }}
                                 />
                             </div>
-                            <span className="progress-label">
-                                {currentIndex + 1} of {artworks.length}
+                            <span className="guided-progress-label">
+                                {activeIndex + 1} of {artworksLength}
                             </span>
                         </div>
                     </div>
                 </div>
-
-                {/* Right Side - 3D Circular Carousel */}
-                <div className="carousel-wrapper">
-                    <div className="carousel-scene">
-                        <div
-                            ref={carouselRef}
-                            className="carousel-track"
-                            style={{ transform: `rotateY(-${rotationY}deg)` }}
-                        >
-                            {artworks.map((artwork, index) => {
-                                const angle = index * anglePerCard;
-
-                                return (
-                                    <div
-                                        key={artwork.id}
-                                        className={`carousel-card ${index === currentIndex ? 'active' : ''}`}
-                                        style={{
-                                            transform: `rotateY(${angle}deg) translateZ(${radius}px)`
-                                        }}
-                                    >
-                                        <div className="card-inner">
-                                            <img src={artwork.image} alt={artwork.title} />
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Scroll indicator */}
-            <div className="scroll-indicator">
-                <div className="scroll-line"></div>
-                <span>Scroll</span>
             </div>
 
             <style>{`
-                .guided-gallery {
-                    position: relative;
-                    height: 100vh;
-                    width: 100%;
-                    background: #fcf7e7;
-                    overflow: hidden;
-                }
+        .guided-gallery-section {
+          background: #fcf7e7;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          padding: 60px 0;
+        }
 
-                .gallery-container {
-                    display: flex;
-                    height: 100%;
-                    width: 100%;
-                }
+        .guided-gallery-container {
+          width: 100%;
+          max-width: 1400px;
+          padding: 2rem 3rem;
+          margin: 0 auto;
+        }
 
-                /* Left Panel - Explanation */
-                .explanation-panel {
-                    width: 40%;
-                    height: 100%;
-                    display: flex;
-                    align-items: center;
-                    padding: 60px;
-                    box-sizing: border-box;
-                }
+        .guided-gallery-grid {
+          display: grid;
+          gap: 4rem;
+          align-items: center;
+        }
 
-                .explanation-content {
-                    max-width: 420px;
-                }
+        /* Image Container with 3D perspective */
+        .guided-image-container {
+          position: relative;
+          width: 100%;
+          height: 420px;
+          perspective: 1200px;
+        }
 
-                .artwork-number {
-                    display: block;
-                    font-family: 'Cormorant Garamond', serif;
-                    font-size: 5rem;
-                    font-weight: 300;
-                    color: rgba(184, 150, 63, 0.2);
-                    line-height: 1;
-                    margin-bottom: -20px;
-                }
+        .guided-artwork-image {
+          position: absolute;
+          width: 100%;
+          max-width: 320px;
+          height: 420px;
+          left: 50%;
+          top: 50%;
+          margin-left: -160px;
+          margin-top: -210px;
+          object-fit: cover;
+          border-radius: 1rem;
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+        }
 
-                .artwork-category {
-                    display: inline-block;
-                    font-size: 0.7rem;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    letter-spacing: 3px;
-                    color: #b8963f;
-                    margin-bottom: 16px;
-                    padding: 8px 16px;
-                    background: rgba(184, 150, 63, 0.1);
-                    border-radius: 20px;
-                }
+        /* Content Section */
+        .guided-content {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
 
-                .artwork-title {
-                    font-family: 'Cormorant Garamond', serif;
-                    font-size: 2.8rem;
-                    font-weight: 500;
-                    color: #1a1a1a;
-                    margin: 0 0 20px;
-                    line-height: 1.15;
-                    font-style: italic;
-                }
+        .guided-content-inner {
+          margin-bottom: 2rem;
+        }
 
-                .artwork-description {
-                    font-family: 'Georgia', serif;
-                    font-size: 1rem;
-                    line-height: 1.8;
-                    color: #666;
-                    margin: 0 0 40px;
-                }
+        .guided-number {
+          display: block;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 4.5rem;
+          font-weight: 300;
+          color: rgba(184, 150, 63, 0.2);
+          line-height: 1;
+          margin-bottom: -10px;
+        }
 
-                .progress-section {
-                    display: flex;
-                    align-items: center;
-                    gap: 16px;
-                }
+        .guided-designation {
+          display: inline-block;
+          font-size: 0.7rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 3px;
+          color: #b8963f;
+          margin-bottom: 12px;
+          padding: 6px 14px;
+          background: rgba(184, 150, 63, 0.12);
+          border-radius: 20px;
+        }
 
-                .progress-bar {
-                    flex: 1;
-                    height: 3px;
-                    background: rgba(0, 0, 0, 0.08);
-                    border-radius: 2px;
-                    overflow: hidden;
-                    max-width: 180px;
-                }
+        .guided-name {
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 2.5rem;
+          font-weight: 500;
+          color: #1a1a1a;
+          margin: 0 0 16px;
+          line-height: 1.2;
+          font-style: italic;
+        }
 
-                .progress-fill {
-                    height: 100%;
-                    background: linear-gradient(90deg, #b8963f, #d4af5a);
-                    transition: width 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
-                }
+        .guided-quote {
+          font-family: 'Georgia', serif;
+          font-size: 1.05rem;
+          line-height: 1.85;
+          color: #555;
+          max-width: 500px;
+        }
 
-                .progress-label {
-                    font-size: 0.85rem;
-                    color: #999;
-                    letter-spacing: 1px;
-                }
+        /* Navigation */
+        .guided-navigation {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
 
-                /* Right Side - 3D Carousel */
-                .carousel-wrapper {
-                    flex: 1;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    perspective: 1200px;
-                }
+        .guided-arrow-buttons {
+          display: flex;
+          gap: 0.75rem;
+        }
 
-                .carousel-scene {
-                    width: 300px;
-                    height: 400px;
-                    position: relative;
-                    transform-style: preserve-3d;
-                }
+        .guided-arrow-button {
+          width: 2.75rem;
+          height: 2.75rem;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: none;
+          box-shadow: 0 4px 15px rgba(184, 150, 63, 0.35);
+        }
 
-                .carousel-track {
-                    width: 100%;
-                    height: 100%;
-                    position: absolute;
-                    transform-style: preserve-3d;
-                    /* No CSS transition - GSAP scrub handles this smoothly */
-                }
+        .guided-arrow-button:hover {
+          transform: scale(1.1);
+        }
 
-                .carousel-card {
-                    position: absolute;
-                    width: 280px;
-                    height: 380px;
-                    left: 50%;
-                    top: 50%;
-                    margin-left: -140px;
-                    margin-top: -190px;
-                    backface-visibility: hidden;
-                }
+        .guided-progress {
+          flex: 1;
+          max-width: 150px;
+          height: 3px;
+          background: rgba(0, 0, 0, 0.08);
+          border-radius: 2px;
+          overflow: hidden;
+        }
 
-                .carousel-card .card-inner {
-                    width: 100%;
-                    height: 100%;
-                    border-radius: 16px;
-                    overflow: hidden;
-                    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-                    transition: opacity 0.4s ease, 
-                                filter 0.4s ease, 
-                                box-shadow 0.4s ease,
-                                transform 0.4s ease;
-                    opacity: 0.5;
-                    filter: brightness(0.65);
-                    transform: scale(0.92);
-                }
+        .guided-progress-bar {
+          height: 100%;
+          background: linear-gradient(90deg, #b8963f, #d4af5a);
+          transition: width 0.5s ease;
+        }
 
-                .carousel-card.active .card-inner {
-                    opacity: 1;
-                    filter: brightness(1);
-                    transform: scale(1);
-                    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
-                }
+        .guided-progress-label {
+          font-size: 0.85rem;
+          color: #999;
+          letter-spacing: 1px;
+        }
 
-                .carousel-card img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
+        /* Responsive - Desktop */
+        @media (min-width: 1024px) {
+          .guided-gallery-grid {
+            grid-template-columns: 1.1fr 1fr;
+            gap: 5rem;
+          }
 
-                /* Scroll indicator */
-                .scroll-indicator {
-                    position: absolute;
-                    bottom: 40px;
-                    right: 60px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 12px;
-                }
+          .guided-image-container {
+            height: 480px;
+          }
 
-                .scroll-line {
-                    width: 1px;
-                    height: 50px;
-                    background: linear-gradient(to bottom, transparent, #b8963f, transparent);
-                    animation: scrollPulse 2s infinite;
-                }
+          .guided-artwork-image {
+            max-width: 360px;
+            height: 480px;
+            margin-left: -180px;
+            margin-top: -240px;
+          }
 
-                @keyframes scrollPulse {
-                    0%, 100% { opacity: 0.3; }
-                    50% { opacity: 1; }
-                }
+          .guided-name {
+            font-size: 2.8rem;
+          }
 
-                .scroll-indicator span {
-                    font-size: 0.65rem;
-                    letter-spacing: 3px;
-                    text-transform: uppercase;
-                    color: #999;
-                }
+          .guided-number {
+            font-size: 5rem;
+          }
+        }
 
-                /* Responsive */
-                @media (max-width: 1100px) {
-                    .explanation-panel {
-                        width: 45%;
-                        padding: 40px;
-                    }
+        /* Responsive - Tablet */
+        @media (max-width: 1023px) {
+          .guided-gallery-container {
+            padding: 2rem;
+          }
 
-                    .artwork-title {
-                        font-size: 2.2rem;
-                    }
+          .guided-content {
+            text-align: center;
+          }
 
-                    .artwork-number {
-                        font-size: 4rem;
-                    }
+          .guided-quote {
+            margin: 0 auto;
+          }
 
-                    .carousel-card {
-                        width: 240px;
-                        height: 320px;
-                        margin-left: -120px;
-                        margin-top: -160px;
-                    }
-                }
+          .guided-navigation {
+            justify-content: center;
+          }
+        }
 
-                @media (max-width: 768px) {
-                    .gallery-container {
-                        flex-direction: column;
-                    }
+        /* Responsive - Mobile */
+        @media (max-width: 640px) {
+          .guided-gallery-section {
+            padding: 40px 0;
+          }
 
-                    .explanation-panel {
-                        width: 100%;
-                        height: auto;
-                        padding: 30px 24px;
-                        text-align: center;
-                    }
+          .guided-image-container {
+            height: 320px;
+          }
 
-                    .explanation-content {
-                        max-width: 100%;
-                    }
+          .guided-artwork-image {
+            max-width: 240px;
+            height: 320px;
+            margin-left: -120px;
+            margin-top: -160px;
+          }
 
-                    .artwork-number {
-                        font-size: 3rem;
-                        margin-bottom: -10px;
-                    }
+          .guided-name {
+            font-size: 1.8rem;
+          }
 
-                    .artwork-title {
-                        font-size: 1.8rem;
-                    }
+          .guided-number {
+            font-size: 3.5rem;
+          }
 
-                    .artwork-description {
-                        font-size: 0.9rem;
-                        margin-bottom: 24px;
-                    }
+          .guided-quote {
+            font-size: 0.95rem;
+          }
 
-                    .progress-section {
-                        justify-content: center;
-                    }
-
-                    .carousel-wrapper {
-                        flex: 1;
-                        perspective: 800px;
-                    }
-
-                    .carousel-card {
-                        width: 200px;
-                        height: 270px;
-                        margin-left: -100px;
-                        margin-top: -135px;
-                    }
-
-                    .scroll-indicator {
-                        right: 20px;
-                        bottom: 20px;
-                    }
-                }
-
-                @media (max-width: 480px) {
-                    .carousel-card {
-                        width: 160px;
-                        height: 220px;
-                        margin-left: -80px;
-                        margin-top: -110px;
-                    }
-                }
-            `}</style>
+          .guided-navigation {
+            flex-direction: column;
+            gap: 12px;
+          }
+        }
+      `}</style>
         </section>
     );
 };

@@ -164,12 +164,16 @@ const ScrollExpandMedia = ({
                             }}
                         />
                         <div className='absolute inset-0 bg-black/10' />
+                        {/* Center vignette - fade to black on background */}
+                        <div className='absolute inset-0' style={{
+                            background: 'radial-gradient(ellipse 30% 49% at center 37%, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 55%, rgba(0, 0, 0, 0.4) 65%, transparent 100%)'
+                        }} />
                     </motion.div>
 
                     <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
                         <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative'>
                             <div
-                                className='absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-none rounded-2xl'
+                                className='absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-none rounded-2xl overflow-hidden bg-black'
                                 style={{
                                     width: `${mediaWidth}px`,
                                     height: `${mediaHeight}px`,
@@ -267,21 +271,16 @@ const ScrollExpandMedia = ({
                                     }}
                                 />
 
-                                <div className='flex flex-col items-center text-center relative z-10 mt-4 transition-none'>
+                                <div className='flex flex-col items-center text-center relative z-10 mt-6 transition-none'>
                                     {date && (
                                         <p
-                                            className='text-2xl text-[#fefdfb]'
-                                            style={{ transform: `translateX(-${textTranslateX}vw)` }}
+                                            className='text-2xl text-[#fefdfb] mt-4'
+                                            style={{
+                                                transform: `translateX(-${textTranslateX}vw)`,
+                                                // textShadow: '0 0 20px rgba(201, 169, 97, 0.6), 0 0 40px rgba(201, 169, 97, 0.4), 0 0 60px rgba(201, 169, 97, 0.2)'
+                                            }}
                                         >
                                             {date}
-                                        </p>
-                                    )}
-                                    {scrollToExpand && (
-                                        <p
-                                            className='text-[#c9a961] font-medium text-center'
-                                            style={{ transform: `translateX(${textTranslateX}vw)` }}
-                                        >
-                                            {scrollToExpand}
                                         </p>
                                     )}
                                 </div>
@@ -304,6 +303,18 @@ const ScrollExpandMedia = ({
                                     {restOfTitle}
                                 </motion.h2>
                             </div>
+
+                            {/* Scroll to Explore - Fixed at bottom */}
+                            {scrollToExpand && (
+                                <div className='absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20'>
+                                    <p
+                                        className='text-[#c9a961] font-medium text-center text-sm tracking-wider'
+                                        style={{ transform: `translateX(${textTranslateX}vw)` }}
+                                    >
+                                        {scrollToExpand}
+                                    </p>
+                                </div>
+                            )}
                         </div>
 
                         <motion.section
