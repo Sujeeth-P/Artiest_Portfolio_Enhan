@@ -1,282 +1,217 @@
 import React, {
-    useEffect,
-    useRef,
-    useState,
-    useMemo,
-    useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
 } from "react";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 function calculateGap(width) {
-    const minWidth = 1024;
-    const maxWidth = 1456;
-    const minGap = 60;
-    const maxGap = 100;
-    if (width <= minWidth) return minGap;
-    if (width >= maxWidth)
-        return Math.max(minGap, maxGap + 0.06018 * (width - maxWidth));
-    return minGap + (maxGap - minGap) * ((width - minWidth) / (maxWidth - minWidth));
+  const minWidth = 1024;
+  const maxWidth = 1456;
+  const minGap = 60;
+  const maxGap = 100;
+  if (width <= minWidth) return minGap;
+  if (width >= maxWidth)
+    return Math.max(minGap, maxGap + 0.06018 * (width - maxWidth));
+  return minGap + (maxGap - minGap) * ((width - minWidth) / (maxWidth - minWidth));
 }
 
 const GuidedGallery = () => {
-    // Artworks data with descriptions
-    const artworks = [
-        {
-            quote: "A stunning portrayal of peacocks amidst vibrant poppies, showcasing the harmonious dance between wildlife and flora.",
-            name: "Paons et Pavots",
-            designation: "Nature Collection",
-            src: "/assets/gallery/paons-et-pavots.jpg",
-        },
-        {
-            quote: "Elegant cockatoos perched among delicate magnolia blooms, capturing the gentle beauty of nature's finest moments.",
-            name: "Cacatoës et Magnolia",
-            designation: "Botanical Collection",
-            src: "/assets/gallery/cacatoës-et-magnolia.jpg",
-        },
-        {
-            quote: "The wild swan in its natural habitat, expressing grace and freedom through fluid brushstrokes and ethereal colors.",
-            name: "Cygne Sauvage",
-            designation: "Wildlife Collection",
-            src: "/assets/gallery/cygne-sauvage.jpg",
-        },
-        {
-            quote: "Water lilies floating serenely on still waters, inspired by impressionist masters and the tranquility of nature.",
-            name: "Nénuphar",
-            designation: "Botanical Collection",
-            src: "/assets/gallery/nénuphar.jpg",
-        },
-        {
-            quote: "Majestic eagles captured in their powerful glory with bold compositions and dynamic lines that command attention.",
-            name: "Aigles Majestueux",
-            designation: "Nature Collection",
-            src: "/assets/aigles.jpg",
-        },
-    ];
+  // Artworks data with descriptions - PITTURA products
+  const artworks = [
+    {
+      quote: "Beautiful floral preservation capturing wedding memories in resin — a timeless keepsake that holds your special moments forever.",
+      name: "Wedding Floral Frame",
+      designation: "Floral Preservation",
+      src: "/assets1/IMG_2011.JPG",
+    },
+    {
+      quote: "Custom personalized frames designed with love — perfect for capturing names, dates, and heartfelt messages.",
+      name: "Personalized Name Frame",
+      designation: "Custom Frames",
+      src: "/assets1/IMG_2092.JPG",
+    },
+    {
+      quote: "Handcrafted letter blocks that spell out stories — a unique and thoughtful gift for any occasion.",
+      name: "Custom Letter Blocks",
+      designation: "Letter Art",
+      src: "/assets1/IMG_2093.JPG",
+    },
+    {
+      quote: "Elegant name boards that add warmth and personality to nurseries, bedrooms, and living spaces.",
+      name: "Baby Name Board",
+      designation: "Name Boards",
+      src: "/assets1/IMG_2094.JPG",
+    },
+    {
+      quote: "Beautiful teak wood frames that give your cherished memories the strength and elegance they deserve.",
+      name: "Teak Wood Frame",
+      designation: "Premium Frames",
+      src: "/assets1/IMG_2095.JPG",
+    },
+  ];
 
-    // State
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [hoverPrev, setHoverPrev] = useState(false);
-    const [hoverNext, setHoverNext] = useState(false);
-    const [containerWidth, setContainerWidth] = useState(1200);
+  // State
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(1200);
 
-    const imageContainerRef = useRef(null);
-    const autoplayIntervalRef = useRef(null);
+  const imageContainerRef = useRef(null);
+  const autoplayIntervalRef = useRef(null);
 
-    const artworksLength = useMemo(() => artworks.length, [artworks]);
-    const activeArtwork = useMemo(
-        () => artworks[activeIndex],
-        [activeIndex, artworks]
-    );
+  const artworksLength = useMemo(() => artworks.length, [artworks]);
+  const activeArtwork = useMemo(
+    () => artworks[activeIndex],
+    [activeIndex, artworks]
+  );
 
-    // Responsive gap calculation
-    useEffect(() => {
-        function handleResize() {
-            if (imageContainerRef.current) {
-                setContainerWidth(imageContainerRef.current.offsetWidth);
-            }
-        }
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    // Autoplay
-    useEffect(() => {
-        autoplayIntervalRef.current = setInterval(() => {
-            setActiveIndex((prev) => (prev + 1) % artworksLength);
-        }, 6000);
-        return () => {
-            if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
-        };
-    }, [artworksLength]);
-
-    // Keyboard navigation
-    useEffect(() => {
-        const handleKey = (e) => {
-            if (e.key === "ArrowLeft") handlePrev();
-            if (e.key === "ArrowRight") handleNext();
-        };
-        window.addEventListener("keydown", handleKey);
-        return () => window.removeEventListener("keydown", handleKey);
-        // eslint-disable-next-line
-    }, [activeIndex, artworksLength]);
-
-    // Navigation handlers
-    const handleNext = useCallback(() => {
-        setActiveIndex((prev) => (prev + 1) % artworksLength);
-        if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
-    }, [artworksLength]);
-
-    const handlePrev = useCallback(() => {
-        setActiveIndex((prev) => (prev - 1 + artworksLength) % artworksLength);
-        if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
-    }, [artworksLength]);
-
-    // Compute transforms for each image (always show 3: left, center, right)
-    function getImageStyle(index) {
-        const gap = calculateGap(containerWidth);
-        const maxStickUp = gap * 0.7;
-        const isActive = index === activeIndex;
-        const isLeft = (activeIndex - 1 + artworksLength) % artworksLength === index;
-        const isRight = (activeIndex + 1) % artworksLength === index;
-
-        if (isActive) {
-            return {
-                zIndex: 3,
-                opacity: 1,
-                pointerEvents: "auto",
-                transform: `translateX(0px) translateY(0px) scale(1) rotateY(0deg)`,
-                filter: 'brightness(1)',
-                transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
-            };
-        }
-        if (isLeft) {
-            return {
-                zIndex: 2,
-                opacity: 0.85,
-                pointerEvents: "auto",
-                transform: `translateX(-${gap}px) translateY(-${maxStickUp}px) scale(0.82) rotateY(18deg)`,
-                filter: 'brightness(0.7)',
-                transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
-            };
-        }
-        if (isRight) {
-            return {
-                zIndex: 2,
-                opacity: 0.85,
-                pointerEvents: "auto",
-                transform: `translateX(${gap}px) translateY(-${maxStickUp}px) scale(0.82) rotateY(-18deg)`,
-                filter: 'brightness(0.7)',
-                transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
-            };
-        }
-        // Hide all other images
-        return {
-            zIndex: 1,
-            opacity: 0,
-            pointerEvents: "none",
-            transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
-        };
+  // Responsive gap calculation
+  useEffect(() => {
+    function handleResize() {
+      if (imageContainerRef.current) {
+        setContainerWidth(imageContainerRef.current.offsetWidth);
+      }
     }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-    // Framer Motion variants for quote
-    const quoteVariants = {
-        initial: { opacity: 0, y: 20 },
-        animate: { opacity: 1, y: 0 },
-        exit: { opacity: 0, y: -20 },
+  // Autoplay
+  useEffect(() => {
+    autoplayIntervalRef.current = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % artworksLength);
+    }, 6000);
+    return () => {
+      if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
     };
+  }, [artworksLength]);
 
-    return (
-        <section className="guided-gallery-section" id="gallery">
-            <div className="guided-gallery-container">
-                <div className="guided-gallery-grid">
-                    {/* Images - Circular Effect */}
-                    <div className="guided-image-container" ref={imageContainerRef}>
-                        {artworks.map((artwork, index) => (
-                            <img
-                                key={artwork.src}
-                                src={artwork.src}
-                                alt={artwork.name}
-                                className="guided-artwork-image"
-                                data-index={index}
-                                style={getImageStyle(index)}
-                            />
-                        ))}
-                    </div>
+  // Compute transforms for each image (always show 3: left, center, right)
+  function getImageStyle(index) {
+    const gap = calculateGap(containerWidth);
+    const maxStickUp = gap * 0.7;
+    const isActive = index === activeIndex;
+    const isLeft = (activeIndex - 1 + artworksLength) % artworksLength === index;
+    const isRight = (activeIndex + 1) % artworksLength === index;
 
-                    {/* Content */}
-                    <div className="guided-content">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={activeIndex}
-                                variants={quoteVariants}
-                                initial="initial"
-                                animate="animate"
-                                exit="exit"
-                                transition={{ duration: 0.3, ease: "easeInOut" }}
-                                className="guided-content-inner"
-                            >
-                                <span className="guided-number">
-                                    {String(activeIndex + 1).padStart(2, '0')}
-                                </span>
-                                <p className="guided-designation">
-                                    {activeArtwork.designation}
-                                </p>
-                                <h3 className="guided-name">
-                                    {activeArtwork.name}
-                                </h3>
-                                <motion.p className="guided-quote">
-                                    {activeArtwork.quote.split(" ").map((word, i) => (
-                                        <motion.span
-                                            key={i}
-                                            initial={{
-                                                filter: "blur(10px)",
-                                                opacity: 0,
-                                                y: 5,
-                                            }}
-                                            animate={{
-                                                filter: "blur(0px)",
-                                                opacity: 1,
-                                                y: 0,
-                                            }}
-                                            transition={{
-                                                duration: 0.22,
-                                                ease: "easeInOut",
-                                                delay: 0.025 * i,
-                                            }}
-                                            style={{ display: "inline-block" }}
-                                        >
-                                            {word}&nbsp;
-                                        </motion.span>
-                                    ))}
-                                </motion.p>
-                            </motion.div>
-                        </AnimatePresence>
+    if (isActive) {
+      return {
+        zIndex: 3,
+        opacity: 1,
+        pointerEvents: "auto",
+        transform: `translateX(0px) translateY(0px) scale(1) rotateY(0deg)`,
+        filter: 'brightness(1)',
+        transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+      };
+    }
+    if (isLeft) {
+      return {
+        zIndex: 2,
+        opacity: 0.85,
+        pointerEvents: "auto",
+        transform: `translateX(-${gap}px) translateY(-${maxStickUp}px) scale(0.82) rotateY(18deg)`,
+        filter: 'brightness(0.7)',
+        transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+      };
+    }
+    if (isRight) {
+      return {
+        zIndex: 2,
+        opacity: 0.85,
+        pointerEvents: "auto",
+        transform: `translateX(${gap}px) translateY(-${maxStickUp}px) scale(0.82) rotateY(-18deg)`,
+        filter: 'brightness(0.7)',
+        transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+      };
+    }
+    // Hide all other images
+    return {
+      zIndex: 1,
+      opacity: 0,
+      pointerEvents: "none",
+      transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
+    };
+  }
 
-                        {/* Navigation */}
-                        <div className="guided-navigation">
-                            <div className="guided-arrow-buttons">
-                                <button
-                                    className="guided-arrow-button"
-                                    onClick={handlePrev}
-                                    style={{
-                                        backgroundColor: hoverPrev ? '#d4af5a' : '#b8963f',
-                                    }}
-                                    onMouseEnter={() => setHoverPrev(true)}
-                                    onMouseLeave={() => setHoverPrev(false)}
-                                    aria-label="Previous artwork"
-                                >
-                                    <FaArrowLeft size={18} color="#fcf7e7" />
-                                </button>
-                                <button
-                                    className="guided-arrow-button"
-                                    onClick={handleNext}
-                                    style={{
-                                        backgroundColor: hoverNext ? '#d4af5a' : '#b8963f',
-                                    }}
-                                    onMouseEnter={() => setHoverNext(true)}
-                                    onMouseLeave={() => setHoverNext(false)}
-                                    aria-label="Next artwork"
-                                >
-                                    <FaArrowRight size={18} color="#fcf7e7" />
-                                </button>
-                            </div>
-                            <div className="guided-progress">
-                                <div
-                                    className="guided-progress-bar"
-                                    style={{ width: `${((activeIndex + 1) / artworksLength) * 100}%` }}
-                                />
-                            </div>
-                            <span className="guided-progress-label">
-                                {activeIndex + 1} of {artworksLength}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  // Framer Motion variants for quote
+  const quoteVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+  };
 
-            <style>{`
+  return (
+    <section className="guided-gallery-section" id="gallery">
+      <div className="guided-gallery-container">
+        <div className="guided-gallery-grid">
+          {/* Images - Circular Effect */}
+          <div className="guided-image-container" ref={imageContainerRef}>
+            {artworks.map((artwork, index) => (
+              <img
+                key={artwork.src}
+                src={artwork.src}
+                alt={artwork.name}
+                className="guided-artwork-image"
+                data-index={index}
+                style={getImageStyle(index)}
+              />
+            ))}
+          </div>
+
+          {/* Content */}
+          <div className="guided-content">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                variants={quoteVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="guided-content-inner"
+              >
+                <span className="guided-number">
+                  {String(activeIndex + 1).padStart(2, '0')}
+                </span>
+                <p className="guided-designation">
+                  {activeArtwork.designation}
+                </p>
+                <h3 className="guided-name">
+                  {activeArtwork.name}
+                </h3>
+                <motion.p className="guided-quote">
+                  {activeArtwork.quote.split(" ").map((word, i) => (
+                    <motion.span
+                      key={i}
+                      initial={{
+                        filter: "blur(10px)",
+                        opacity: 0,
+                        y: 5,
+                      }}
+                      animate={{
+                        filter: "blur(0px)",
+                        opacity: 1,
+                        y: 0,
+                      }}
+                      transition={{
+                        duration: 0.22,
+                        ease: "easeInOut",
+                        delay: 0.025 * i,
+                      }}
+                      style={{ display: "inline-block" }}
+                    >
+                      {word}&nbsp;
+                    </motion.span>
+                  ))}
+                </motion.p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
         .guided-gallery-section {
           background: #fcf7e7;
           min-height: 100vh;
@@ -504,8 +439,8 @@ const GuidedGallery = () => {
           }
         }
       `}</style>
-        </section>
-    );
+    </section>
+  );
 };
 
 export default GuidedGallery;

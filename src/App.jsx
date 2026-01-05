@@ -13,6 +13,7 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Lightbox from './components/Lightbox';
+import FixedCTA from './components/FixedCTA';
 import { initScrollAnimations } from './components/ui/scroll-reveal';
 import { initGsapScrollAnimations } from './components/ui/gsap-scroll-animations';
 import './styles/gsap-scroll-animations.css';
@@ -93,6 +94,8 @@ function App() {
       <About />
       <Contact />
       <Footer />
+
+      <FixedCTA />
 
       <Lightbox
         isOpen={lightboxOpen}

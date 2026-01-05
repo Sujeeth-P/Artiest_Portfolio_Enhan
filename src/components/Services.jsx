@@ -1,37 +1,49 @@
-import { useRef, useEffect, useState } from 'react';
-import { gsap } from 'gsap';
+import { useRef, useState } from 'react';
 
 const Services = () => {
-    const wrapperRef = useRef(null);
-    const navRef = useRef(null);
-    const bgRef = useRef(null);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [isAnimating, setIsAnimating] = useState(false);
+    const containerRef = useRef(null);
+    const [activeService, setActiveService] = useState(null);
 
     const services = [
         {
-            title: 'Custom Portraits',
-            heading: 'Timeless Portraits',
-            description: 'Capture the essence of your loved ones with a beautifully crafted portrait. Perfect for gifts, memorials, or personal collections.',
-            features: ['Individual & Family Portraits', 'Pet Portraits', 'Memorial Paintings', 'Work from Photos'],
-            price: '$800',
-            image: '/assets/portrait_artwork.png'
+            title: 'Floral Preservation',
+            description: 'Your special flowers—wedding, farewell, or celebration—preserved forever, exactly as they were.',
+            image: '/assets1/IMG_2094.JPG'
         },
         {
-            title: 'Custom Paintings',
-            heading: 'Bespoke Artworks',
-            description: 'Commission a unique artwork tailored to your space and style. From abstract to realism, I create pieces that speak to you.',
-            features: ['Any Size & Style', 'Interior Design Matching', 'Corporate Art', 'Multiple Revisions'],
-            price: '$1,200',
-            image: '/assets/landscape_painting.png'
+            title: 'Personalised Frames',
+            description: 'Thoughtfully designed frames that hold names, dates, messages, and emotions.',
+            image: '/assets1/IMG_2095.JPG'
         },
         {
-            title: 'Illustration & Design',
-            heading: 'Creative Illustrations',
-            description: 'Professional illustrations for books, branding, events, and more. High-quality artwork for commercial and personal use.',
-            features: ['Book Covers & Interiors', 'Wedding Invitations', 'Brand Illustrations', 'Digital & Print Ready'],
-            price: '$500',
-            image: '/assets/abstract_art.png'
+            title: 'Letter Blocks',
+            description: 'Custom letter creations that spell stories—perfect for gifting or décor.',
+            image: '/assets1/IMG_2096.JPG'
+        },
+        {
+            title: 'Name Boards',
+            description: 'Handmade name boards that add warmth and personality to any space.',
+            image: '/assets1/IMG_2011.JPG'
+        },
+        {
+            title: 'Keychains',
+            description: 'Small, personal keepsakes made to carry a memory wherever you go.',
+            image: '/assets1/IMG_2092.JPG'
+        },
+        {
+            title: 'Wooden Serving Trays',
+            description: 'Functional, elegant trays crafted to elevate everyday moments.',
+            image: '/assets1/IMG_2093.JPG'
+        },
+        {
+            title: 'Resin Nail Art',
+            description: 'Tiny art pieces for your hands—customised, detailed, and unique.',
+            image: '/assets1/IMG_2094.JPG'
+        },
+        {
+            title: 'Teak Wood Frames',
+            description: 'Timeless teak wood frames that give your memories the strength and elegance they deserve.',
+            image: '/assets1/IMG_2095.JPG'
         }
     ];
 
@@ -43,239 +55,237 @@ const Services = () => {
         }
     };
 
-    // Initialize GSAP animations
-    useEffect(() => {
-        gsap.registerPlugin();
-
-        // Create custom ease
-        gsap.config({ force3D: true });
-    }, []);
-
-    // Handle Flip button animations
-    useEffect(() => {
-        const wrapper = navRef.current;
-        const bg = bgRef.current;
-        if (!wrapper || !bg) return;
-
-        const buttons = wrapper.querySelectorAll('.service-tab-button');
-        const activeButton = buttons[activeIndex];
-
-        // Move bg to active button on mount/change
-        if (activeButton && bg.parentElement !== activeButton) {
-            activeButton.appendChild(bg);
-            gsap.set(bg, { x: 0, y: 0, width: '100%', height: '100%' });
-        }
-
-        const handleMouseEnter = (button) => {
-            if (!bg) return;
-            const state = {
-                x: bg.offsetLeft,
-                y: bg.offsetTop,
-                width: bg.offsetWidth,
-                height: bg.offsetHeight
-            };
-            button.appendChild(bg);
-
-            gsap.fromTo(bg,
-                {
-                    x: state.x - bg.offsetLeft,
-                    y: state.y - bg.offsetTop,
-                    width: state.width,
-                    height: state.height
-                },
-                {
-                    x: 0,
-                    y: 0,
-                    width: '100%',
-                    height: '100%',
-                    duration: 0.4,
-                    ease: 'power2.out'
-                }
-            );
-        };
-
-        const handleMouseLeave = () => {
-            if (!bg) return;
-            const currentActiveButton = wrapper.querySelector('.service-tab-button.active');
-            if (currentActiveButton && bg.parentElement !== currentActiveButton) {
-                const state = {
-                    x: bg.offsetLeft,
-                    y: bg.offsetTop
-                };
-                currentActiveButton.appendChild(bg);
-
-                gsap.fromTo(bg,
-                    {
-                        x: state.x - bg.offsetLeft,
-                        y: state.y - bg.offsetTop
-                    },
-                    {
-                        x: 0,
-                        y: 0,
-                        duration: 0.4,
-                        ease: 'power2.out'
-                    }
-                );
-            }
-        };
-
-        buttons.forEach((button) => {
-            button.addEventListener('mouseenter', () => handleMouseEnter(button));
-            button.addEventListener('mouseleave', handleMouseLeave);
-        });
-
-        return () => {
-            buttons.forEach((button) => {
-                button.removeEventListener('mouseenter', () => handleMouseEnter(button));
-                button.removeEventListener('mouseleave', handleMouseLeave);
-            });
-        };
-    }, [activeIndex]);
-
-    // Handle tab switching with animations
-    const switchTab = (index) => {
-        if (isAnimating || index === activeIndex) return;
-        setIsAnimating(true);
-
-        const wrapper = wrapperRef.current;
-        const outgoingContent = wrapper.querySelector('.service-content-item.active');
-        const incomingContent = wrapper.querySelectorAll('.service-content-item')[index];
-        const outgoingVisual = wrapper.querySelector('.service-visual-item.active');
-        const incomingVisual = wrapper.querySelectorAll('.service-visual-item')[index];
-
-        const outgoingLines = outgoingContent?.querySelectorAll('.fade-element') || [];
-        const incomingLines = incomingContent?.querySelectorAll('.fade-element') || [];
-
-        const timeline = gsap.timeline({
-            defaults: { ease: 'power3.inOut' },
-            onComplete: () => {
-                outgoingContent?.classList.remove('active');
-                outgoingVisual?.classList.remove('active');
-                setActiveIndex(index);
-                setIsAnimating(false);
-            }
-        });
-
-        incomingContent?.classList.add('active');
-        incomingVisual?.classList.add('active');
-
-        timeline
-            .to(outgoingLines, { y: '-2em', autoAlpha: 0, duration: 0.4 }, 0)
-            .to(outgoingVisual, { autoAlpha: 0, xPercent: 3, duration: 0.5 }, 0)
-            .fromTo(incomingLines,
-                { y: '2em', autoAlpha: 0 },
-                { y: '0em', autoAlpha: 1, stagger: 0.075, duration: 0.5 },
-                0.4
-            )
-            .fromTo(incomingVisual,
-                { autoAlpha: 0, xPercent: 3 },
-                { autoAlpha: 1, xPercent: 0, duration: 0.6 },
-                0.35
-            );
-    };
-
     return (
-        <section className="services-tab-section" id="services">
-            <div className="services-tab-wrapper" ref={wrapperRef}>
-                {/* Centered Header - Above columns */}
-                <div className="services-header" data-animate="fade-up">
-                    <span className="services-label">What I Offer</span>
-                    <h2 className="services-heading">
-                        Commission <span className="services-heading-accent">Services</span>
-                    </h2>
+        <section className="services-section" id="services" ref={containerRef}>
+            <div className="services-container">
+                {/* Quote Section */}
+                <div className="services-quote" data-animate="fade-up">
+                    <blockquote>
+                        "Art enables us to find ourselves and lose ourselves at the same time." — Thomas Merton
+                    </blockquote>
                 </div>
 
-                <div className="services-tab-layout">
-                    {/* Left Column - Content */}
-                    <div className="services-tab-col services-tab-col-left">
-                        <div className="services-tab-container">
-                            {/* Top Section - Main Heading & Tabs */}
-                            <div className="services-tab-top">
-                                <h1 className="services-tab-main-heading">
-                                    Explore the Layers of Abstract Design and Depth
-                                </h1>
+                {/* Header */}
+                <div className="services-header" data-animate="fade-up">
+                    <h2 className="services-title">WHAT CAN I DO FOR YOU?</h2>
+                </div>
 
-                                {/* Tab Navigation */}
-                                <div className="services-filter-bar" ref={navRef}>
-                                    {services.map((service, index) => (
-                                        <button
-                                            key={service.title}
-                                            className={`service-tab-button ${index === activeIndex ? 'active' : ''}`}
-                                            onClick={() => switchTab(index)}
-                                        >
-                                            <span className="service-tab-button-text">{service.title}</span>
-                                            {index === 0 && (
-                                                <div className="service-tab-bg" ref={bgRef}></div>
-                                            )}
-                                        </button>
-                                    ))}
-                                </div>
+                {/* Services Grid */}
+                <div className="services-grid">
+                    {services.map((service, index) => (
+                        <div
+                            key={index}
+                            className={`service-card ${activeService === index ? 'active' : ''}`}
+                            onMouseEnter={() => setActiveService(index)}
+                            onMouseLeave={() => setActiveService(null)}
+                            data-animate="fade-up"
+                            data-delay={index * 100}
+                        >
+                            <div className="service-card-inner">
+                                <h3 className="service-title">{service.title}</h3>
+                                <p className="service-description">{service.description}</p>
                             </div>
-
-                            {/* Bottom Section - Content Items */}
-                            <div className="services-tab-bottom">
-                                <div className="services-content-wrap">
-                                    {services.map((service, index) => (
-                                        <div
-                                            key={index}
-                                            className={`service-content-item ${index === activeIndex ? 'active' : ''}`}
-                                        >
-                                            <h2 className="service-content-heading fade-element">
-                                                {service.heading}
-                                            </h2>
-                                            <p className="service-content-description fade-element">
-                                                {service.description}
-                                            </p>
-                                            <ul className="service-features fade-element">
-                                                {service.features.map((feature, fIndex) => (
-                                                    <li key={fIndex} className="service-feature-item">
-                                                        <span className="feature-check">✓</span>
-                                                        {feature}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                            {/* Price and CTA in a row */}
-                                            <div className="service-price-cta-row fade-element">
-                                                <div className="service-price-wrap">
-                                                    <span className="service-price-label">Starting from</span>
-                                                    <span className="service-price">{service.price}</span>
-                                                </div>
-                                                <a
-                                                    href="#contact"
-                                                    onClick={scrollToContact}
-                                                    className="service-cta-button"
-                                                >
-                                                    <span>Request a Quote</span>
-                                                    <div className="service-cta-bg"></div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                            <div
+                                className="service-bg-image"
+                                style={{ backgroundImage: `url(${service.image})` }}
+                            />
                         </div>
-                    </div>
+                    ))}
+                </div>
 
-                    {/* Right Column - Visuals */}
-                    <div className="services-tab-col services-tab-col-right">
-                        <div className="services-visual-wrap">
-                            {services.map((service, index) => (
-                                <div
-                                    key={index}
-                                    className={`service-visual-item ${index === activeIndex ? 'active' : ''}`}
-                                >
-                                    <img
-                                        src={service.image}
-                                        alt={service.title}
-                                        className="service-visual-image"
-                                        loading="lazy"
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                {/* Bottom Text */}
+                <div className="services-custom-text" data-animate="fade-up">
+                    <p>
+                        Everything is custom-made to suit your idea, your occasion, and your preferences.
+                        We don't work with fixed designs or ready-made templates. You can choose the colours,
+                        materials, size, and details—so the final piece feels like yours, not something picked off a shelf!
+                    </p>
+                    <a href="#contact" onClick={scrollToContact} className="services-cta">
+                        Start Your Custom Order
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
                 </div>
             </div>
+
+            <style>{`
+                .services-section {
+                    padding: 100px 40px;
+                    background: #fcf7e7;
+                }
+
+                .services-container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }
+
+                .services-quote {
+                    text-align: center;
+                    margin-bottom: 60px;
+                }
+
+                .services-quote blockquote {
+                    font-family: 'Cormorant Garamond', Georgia, serif;
+                    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+                    font-style: italic;
+                    color: #c9a961;
+                    margin: 0;
+                    line-height: 1.5;
+                }
+
+                .services-header {
+                    text-align: center;
+                    margin-bottom: 60px;
+                }
+
+                .services-title {
+                    font-family: 'Cormorant Garamond', Georgia, serif;
+                    font-size: clamp(2rem, 4vw, 3rem);
+                    font-weight: 500;
+                    color: #1a1a1a;
+                    margin: 0;
+                    letter-spacing: 3px;
+                }
+
+                .services-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                    gap: 24px;
+                    margin-bottom: 60px;
+                }
+
+                .service-card {
+                    position: relative;
+                    background: #fff;
+                    border-radius: 16px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    cursor: pointer;
+                }
+
+                .service-card:hover {
+                    transform: translateY(-8px);
+                    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+                }
+
+                .service-card-inner {
+                    position: relative;
+                    z-index: 2;
+                    padding: 32px;
+                    background: rgba(255, 255, 255, 0.95);
+                    transition: all 0.4s ease;
+                }
+
+                .service-card:hover .service-card-inner {
+                    background: rgba(255, 255, 255, 0.85);
+                }
+
+                .service-bg-image {
+                    position: absolute;
+                    inset: 0;
+                    background-size: cover;
+                    background-position: center;
+                    opacity: 0;
+                    transition: opacity 0.4s ease;
+                    z-index: 1;
+                }
+
+                .service-card:hover .service-bg-image {
+                    opacity: 0.2;
+                }
+
+
+
+                .service-card .service-title {
+                    font-family: 'Cormorant Garamond', Georgia, serif;
+                    font-size: 1.4rem;
+                    font-weight: 600;
+                    color: #1a1a1a;
+                    margin: 0 0 12px;
+                    transition: color 0.3s ease;
+                }
+
+                .service-card:hover .service-title {
+                    color: #b8963f;
+                }
+
+                .service-description {
+                    font-size: 0.95rem;
+                    color: #666;
+                    line-height: 1.7;
+                    margin: 0;
+                }
+
+                .services-custom-text {
+                    text-align: center;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    padding: 40px;
+                    background: linear-gradient(135deg, rgba(201, 169, 97, 0.08) 0%, rgba(184, 150, 63, 0.12) 100%);
+                    border-radius: 20px;
+                    border: 1px solid rgba(201, 169, 97, 0.2);
+                }
+
+                .services-custom-text p {
+                    font-size: 1.1rem;
+                    color: #4a4a4a;
+                    line-height: 1.8;
+                    margin: 0 0 24px;
+                }
+
+                .services-cta {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 14px 28px;
+                    background: linear-gradient(135deg, #c9a961 0%, #b8963f 100%);
+                    color: #1a1a1a;
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    text-decoration: none;
+                    border-radius: 50px;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(185, 150, 63, 0.3);
+                }
+
+                .services-cta:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba(185, 150, 63, 0.4);
+                }
+
+                .services-cta svg {
+                    transition: transform 0.3s ease;
+                }
+
+                .services-cta:hover svg {
+                    transform: translateX(4px);
+                }
+
+                @media (max-width: 768px) {
+                    .services-section {
+                        padding: 60px 20px;
+                    }
+
+                    .services-grid {
+                        grid-template-columns: 1fr;
+                        gap: 16px;
+                    }
+
+                    .service-card-inner {
+                        padding: 24px;
+                    }
+
+                    .services-custom-text {
+                        padding: 24px;
+                    }
+
+                    .services-custom-text p {
+                        font-size: 1rem;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

@@ -1,16 +1,16 @@
 const ClientWork = () => {
     const testimonials = [
         {
-            image: '/assets/slideshow/cerfs.jpg',
-            quote: `Elena captured our family perfectly. The portrait now hangs in our living room and everyone who visits comments on how beautiful it is. Her attention to detail and ability to bring out each person's personality is remarkable.`,
-            author: 'Sarah Mitchell',
-            project: 'Family Portrait Commission'
+            image: '/assets1/IMG_2092.JPG',
+            quote: `The preserved wedding flowers are absolutely stunning! Sandhiya captured every detail so beautifully. Now our special day lives on in this gorgeous piece.`,
+            author: 'Priya & Karthik',
+            project: 'Wedding Floral Preservation'
         },
         {
-            image: '/assets/landscape_painting.png',
-            quote: `We commissioned Elena to create artwork for our office lobby. She understood our brand vision perfectly and delivered a stunning piece that impresses all our clients. Highly professional throughout the process.`,
-            author: 'James Rodriguez',
-            project: 'Corporate Art Commission'
+            image: '/assets1/IMG_2094.JPG',
+            quote: `The personalized name board for our baby's nursery exceeded all expectations. The craftsmanship and attention to detail is remarkable. Highly recommend!`,
+            author: 'Meera S.',
+            project: 'Custom Name Board'
         }
     ];
 
@@ -22,18 +22,18 @@ const ClientWork = () => {
         },
         {
             number: '02',
-            title: 'Sketches & Approval',
-            description: 'I create preliminary sketches for your review and approval before painting begins.'
+            title: 'Design & Approval',
+            description: 'I create preliminary designs for your review and approval before creation begins.'
         },
         {
             number: '03',
-            title: 'Creation',
+            title: 'Handcrafting',
             description: 'Your artwork is carefully created with regular progress updates shared with you.'
         },
         {
             number: '04',
             title: 'Delivery',
-            description: 'Final artwork is professionally packaged and shipped or hand-delivered to you.'
+            description: 'Final artwork is professionally packaged and delivered safely to you.'
         }
     ];
 
@@ -42,13 +42,13 @@ const ClientWork = () => {
             {/* Section Header */}
             <div className="text-center max-w-[600px] mx-auto mb-[60px]" data-animate="fade-up">
                 <span className="inline-block text-[0.8rem] font-semibold tracking-[3px] uppercase text-gold-500 mb-[15px]">
-                    Success Stories
+                    Testimonials
                 </span>
                 <h2 className="font-[var(--font-display)] text-[clamp(2rem,4vw,3rem)] font-semibold text-[#1a1a1a] mb-5">
-                    Client <span className="text-gold-500 italic">Commissions</span>
+                    WHAT OUR CUSTOMERS SAY
                 </h2>
                 <p className="text-[1.05rem] text-[#4a4a4a] leading-[1.7]">
-                    See what clients say about their commissioned artwork experience
+                    See what clients say about their custom art experience
                 </p>
             </div>
 
@@ -86,10 +86,10 @@ const ClientWork = () => {
                 ))}
             </div>
 
-            {/* Process Section */}
+            {/* Process Section - HOW DO WE WORK? */}
             <div className="mt-[100px] max-w-[1200px] mx-auto">
                 <h3 className="font-[var(--font-display)] text-[1.8rem] font-semibold text-[#1a1a1a] text-center mb-[50px]" data-animate="fade-up">
-                    How Commissions Work
+                    HOW DO WE WORK?
                 </h3>
                 <div className="flex flex-wrap justify-center items-start gap-0 process-steps-container">
                     {processSteps.map((step, index) => (

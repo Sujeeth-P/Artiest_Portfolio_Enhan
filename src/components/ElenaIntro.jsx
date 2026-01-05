@@ -85,28 +85,28 @@ const ElenaIntro = ({ onComplete }) => {
             ease: 'none',
             stagger: 0.4
         }, '-=0.1');
-tl.add(() => {
-    const rect = growingImage.getBoundingClientRect();
+        tl.add(() => {
+            const rect = growingImage.getBoundingClientRect();
 
-    gsap.set(growingImage, {
-        position: 'fixed',
-        top: rect.top,
-        left: rect.left,
-        width: rect.width,
-        height: rect.height,
-        x: 0,
-        y: 0
-    });
-});
+            gsap.set(growingImage, {
+                position: 'fixed',
+                top: rect.top,
+                left: rect.left,
+                width: rect.width,
+                height: rect.height,
+                x: 0,
+                y: 0
+            });
+        });
 
-tl.to(growingImage, {
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    duration: 1.8,
-    ease: 'expo.inOut'
-}, '+=0.3');
+        tl.to(growingImage, {
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            duration: 1.8,
+            ease: 'expo.inOut'
+        }, '+=0.3');
 
         // 7. Box also expands
         tl.to(box, {
@@ -130,11 +130,12 @@ tl.to(growingImage, {
         >
             <div className="elena-loader">
                 <div className="elena__h1">
-                    {/* Left side letters: E-l-e */}
+                    {/* Left side letters: P-I-T-T */}
                     <div className="elena__h1-start">
-                        <div className="elena__letter-wrap"><span className="elena__letter">E</span></div>
-                        <div className="elena__letter-wrap"><span className="elena__letter">l</span></div>
-                        <div className="elena__letter-wrap"><span className="elena__letter">e</span></div>
+                        <div className="elena__letter-wrap"><span className="elena__letter">P</span></div>
+                        <div className="elena__letter-wrap"><span className="elena__letter">I</span></div>
+                        <div className="elena__letter-wrap"><span className="elena__letter">T</span></div>
+                        <div className="elena__letter-wrap"><span className="elena__letter">T</span></div>
                     </div>
 
                     {/* Center box with growing image */}
@@ -143,20 +144,21 @@ tl.to(growingImage, {
                             <div className="elena__growing-image">
                                 <div className="elena__growing-image-wrap">
                                     {/* Preview images that flash and fade */}
-                                    <img className="elena__cover-image-extra is--1" src="/assets/gallery/paons-et-pavots.jpg" alt="" />
-                                    <img className="elena__cover-image-extra is--2" src="/assets/gallery/cacatoës-et-magnolia.jpg" alt="" />
-                                    <img className="elena__cover-image-extra is--3" src="/assets/gallery/cygne-sauvage.jpg" alt="" />
+                                    <img className="elena__cover-image-extra is--1" src="/assets1/IMG_2094.JPG" alt="" />
+                                    <img className="elena__cover-image-extra is--2" src="/assets1/IMG_2095.JPG" alt="" />
+                                    <img className="elena__cover-image-extra is--3" src="/assets1/IMG_2096.JPG" alt="" />
                                     {/* Final image - will crossfade smoothly to Hero */}
-                                    <img className="elena__cover-image" src="/assets/gallery/faisans-ordinaires.jpg" alt="" />
+                                    <img className="elena__cover-image" src="/assets1/IMG_2093.JPG" alt="" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Right side letters: n-a */}
+                    {/* Right side letters: U-R-A */}
                     <div className="elena__h1-end">
-                        <div className="elena__letter-wrap"><span className="elena__letter">n</span></div>
-                        <div className="elena__letter-wrap"><span className="elena__letter">a</span></div>
+                        <div className="elena__letter-wrap"><span className="elena__letter">U</span></div>
+                        <div className="elena__letter-wrap"><span className="elena__letter">R</span></div>
+                        <div className="elena__letter-wrap"><span className="elena__letter">A</span></div>
                     </div>
                 </div>
             </div>

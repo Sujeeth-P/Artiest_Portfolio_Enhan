@@ -45,23 +45,18 @@ const Hero = ({ introComplete = false }) => {
 
   const [mediaContent] = useState({
     image: {
-      // REPLACE WITH YOUR OWN ARTWORK
-      src: '/assets/todol/Hero.webp',
-      background: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1920&auto=format&fit=crop',
-      title: 'Where Art Speaks',
-      date: 'Elena Ross • Digital Artist',
+      // PITTURA Hero Image - MUST match the final image from intro (IMG_2093) for seamless transition
+      src: '/assets1/IMG_2093.JPG',
+      background: '/assets1/IMG_2093.JPG',  // Same as intro final image for smooth transition
+      title: 'PITTURA, Where The Art Speaks',
+      date: 'Sandhiya • Handcrafted Art',
       scrollToExpand: 'Scroll to Explore',
     },
     video: {
-      // Example with video - you can use your own video URL
       src: 'https://assets.mixkit.co/videos/preview/mixkit-artist-painting-on-canvas-43866-large.mp4',
-      // poster: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=1280&auto=format&fit=crop',
-      // background: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1920&auto=format&fit=crop',
-      // src: '/assets/todol/Hero.webp',
-      // poster: ,
-      background: '/assets/todol/Hero.webp',
-      title: 'Where Art Speaks',
-      date: 'Elena Ross • Digital Artist',
+      background: '/assets1/IMG_2093.JPG',
+      title: 'PITTURA, Where The Art Speaks',
+      date: 'Sandhiya • Handcrafted Art',
       scrollToExpand: 'Scroll to Explore',
     }
   });

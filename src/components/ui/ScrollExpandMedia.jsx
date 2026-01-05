@@ -271,13 +271,13 @@ const ScrollExpandMedia = ({
                                     }}
                                 />
 
-                                <div className='flex flex-col items-center text-center relative z-10 mt-6 transition-none'>
+                                <div className='flex flex-col items-center text-center relative z-20 mt-6 transition-none'>
                                     {date && (
                                         <p
-                                            className='text-2xl text-[#fefdfb] mt-4'
+                                            className='text-2xl text-[#fefdfb] mt-4 drop-shadow-lg'
                                             style={{
                                                 transform: `translateX(-${textTranslateX}vw)`,
-                                                // textShadow: '0 0 20px rgba(201, 169, 97, 0.6), 0 0 40px rgba(201, 169, 97, 0.4), 0 0 60px rgba(201, 169, 97, 0.2)'
+                                                textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)'
                                             }}
                                         >
                                             {date}

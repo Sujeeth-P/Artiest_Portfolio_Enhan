@@ -52,9 +52,7 @@ const Navbar = () => {
 
     const navLinks = [
         { href: '#home', label: 'Home' },
-        { href: '#services', label: 'Services' },
-        { href: '#client-work', label: 'Work' },
-        { href: '#about', label: 'About' }
+        { href: '#artworks', label: 'Art Works' }
     ];
 
     return (
@@ -81,7 +79,7 @@ const Navbar = () => {
                 >
                     <span className="font-[var(--font-display)] text-[1.2rem] font-bold text-[#2a2a2a] 
                         group-hover:scale-110 transition-transform duration-300 ml-1">
-                        E
+                        P
                     </span>
                 </a>
 
@@ -116,7 +114,7 @@ const Navbar = () => {
                         hover:from-[#d4af6a] hover:to-[#c9a961] 
                         hover:shadow-[0_4px_20px_rgba(185,150,63,0.4)]"
                 >
-                    Commission Art
+                    Call to Enquire
                 </a>
 
                 {/* Mobile Toggle */}
@@ -168,7 +166,7 @@ const Navbar = () => {
                                 font-semibold text-[#2a2a2a] bg-gradient-to-r from-[#c9a961] to-[#d4af6a] rounded-xl
                                 hover:from-[#d4af6a] hover:to-[#c9a961] transition-all duration-200"
                         >
-                            Commission Art
+                            Call to Enquire
                         </a>
                     </div>
                 </div>

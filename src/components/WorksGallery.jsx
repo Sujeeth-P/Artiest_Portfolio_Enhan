@@ -14,135 +14,71 @@ const WorksGallery = ({ onViewArtwork }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [progress, setProgress] = useState(0);
 
-    // All artworks from the assets folder
+    // All artworks from the assets folder - PITTURA products
     const artworks = [
         {
             id: 1,
-            image: '/assets/aigles.jpg',
-            title: 'Aigles Majestueux',
-            category: 'Nature',
-            medium: 'Illustration',
-            year: '2024'
+            image: '/assets1/IMG_2011.JPG',
+            title: 'Wedding Floral Preservation',
+            category: 'Floral',
+            medium: 'Resin Art',
+            year: '2025'
         },
         {
             id: 2,
-            image: '/assets/coqs-et-poules.jpg',
-            title: 'Coqs et Poules',
-            category: 'Wildlife',
-            medium: 'Traditional Art',
-            year: '2024'
+            image: '/assets1/IMG_2092.JPG',
+            title: 'Custom Name Frame',
+            category: 'Frames',
+            medium: 'Handcrafted',
+            year: '2025'
         },
         {
             id: 3,
-            image: '/assets/portrait_artwork.png',
-            title: 'Elegant Grace',
-            category: 'Portraits',
-            medium: 'Oil on Canvas',
-            year: '2024'
+            image: '/assets1/IMG_2093.JPG',
+            title: 'Letter Block Creation',
+            category: 'Decor',
+            medium: 'Mixed Media',
+            year: '2025'
         },
         {
             id: 4,
-            image: '/assets/landscape_painting.png',
-            title: 'Golden Horizon',
-            category: 'Landscapes',
-            medium: 'Acrylic on Canvas',
-            year: '2023'
+            image: '/assets1/IMG_2094.JPG',
+            title: 'Baby Name Board',
+            category: 'Name Boards',
+            medium: 'Wood & Paint',
+            year: '2025'
         },
         {
             id: 5,
-            image: '/assets/abstract_art.png',
-            title: 'Geometric Harmony',
-            category: 'Abstract',
-            medium: 'Mixed Media',
-            year: '2024'
+            image: '/assets1/IMG_2095.JPG',
+            title: 'Teak Wood Frame',
+            category: 'Premium',
+            medium: 'Teak Wood',
+            year: '2025'
         },
         {
             id: 6,
-            image: '/assets/still_life.png',
-            title: 'Floral Symphony',
-            category: 'Still Life',
-            medium: 'Oil on Canvas',
-            year: '2023'
+            image: '/assets1/IMG_2096.JPG',
+            title: 'Personalized Gift Set',
+            category: 'Gifts',
+            medium: 'Handcrafted',
+            year: '2025'
         },
         {
             id: 7,
-            image: '/assets/environment_art.png',
-            title: 'Enchanted Forest',
-            category: 'Environment',
-            medium: 'Digital Art',
-            year: '2024'
+            image: '/assets1/IMG_2011.JPG',
+            title: 'Anniversary Floral Frame',
+            category: 'Floral',
+            medium: 'Resin & Flowers',
+            year: '2025'
         },
         {
             id: 8,
-            image: '/assets/gallery/cacatoës-et-magnolia.jpg',
-            title: 'Cacatoës et Magnolia',
-            category: 'Nature',
-            medium: 'Illustration',
-            year: '2024'
-        },
-        {
-            id: 9,
-            image: '/assets/gallery/carpocoris.jpg',
-            title: 'Carpocoris',
-            category: 'Nature',
-            medium: 'Scientific Illustration',
-            year: '2024'
-        },
-        {
-            id: 10,
-            image: '/assets/gallery/couronne-imperiale.jpg',
-            title: 'Couronne Impériale',
-            category: 'Botanical',
-            medium: 'Watercolor',
-            year: '2023'
-        },
-        {
-            id: 11,
-            image: '/assets/gallery/cygne-sauvage.jpg',
-            title: 'Cygne Sauvage',
-            category: 'Wildlife',
-            medium: 'Illustration',
-            year: '2024'
-        },
-        {
-            id: 12,
-            image: '/assets/gallery/cytises-et-digitales.jpg',
-            title: 'Cytises et Digitales',
-            category: 'Botanical',
-            medium: 'Traditional Art',
-            year: '2023'
-        },
-        {
-            id: 13,
-            image: '/assets/gallery/faisans-ordinaires.jpg',
-            title: 'Faisans Ordinaires',
-            category: 'Wildlife',
-            medium: 'Illustration',
-            year: '2024'
-        },
-        {
-            id: 14,
-            image: '/assets/gallery/martinets-et-chèvrefeuille.jpg',
-            title: 'Martinets et Chèvrefeuille',
-            category: 'Nature',
-            medium: 'Watercolor',
-            year: '2024'
-        },
-        {
-            id: 15,
-            image: '/assets/gallery/nénuphar.jpg',
-            title: 'Nénuphar',
-            category: 'Botanical',
-            medium: 'Watercolor',
-            year: '2023'
-        },
-        {
-            id: 16,
-            image: '/assets/gallery/paons-et-pavots.jpg',
-            title: 'Paons et Pavots',
-            category: 'Nature',
-            medium: 'Illustration',
-            year: '2024'
+            image: '/assets1/IMG_2092.JPG',
+            title: 'Wooden Serving Tray',
+            category: 'Trays',
+            medium: 'Wood & Resin',
+            year: '2025'
         }
     ];
 
@@ -254,13 +190,19 @@ const WorksGallery = ({ onViewArtwork }) => {
     };
 
     return (
-        <section ref={sectionRef} className="works-section" id="works">
+        <section ref={sectionRef} className="works-section" id="artworks">
             {/* Header - Scrolls in vertically first */}
             <div ref={headerRef} className="works-header">
                 <div className="header-content">
-                    <span className="works-label">Collection</span>
-                    <h2 className="works-title">Artist Works</h2>
-                    <p className="works-subtitle">Explore the complete portfolio of artworks</p>
+                    <span className="works-label">Portfolio</span>
+                    <h2 className="works-title">ART WORKS</h2>
+                    <p className="works-subtitle">
+                        Some moments are too important to fade with time. I believe preserving them allows us to
+                        relive emotions, stories, and connections, long after the moment has passed.
+                    </p>
+                    <p className="works-subtitle" style={{ marginTop: '10px', fontSize: '0.95rem' }}>
+                        Explore my complete portfolio to see how your memories are transformed into handcrafted art.
+                    </p>
                 </div>
             </div>
 
