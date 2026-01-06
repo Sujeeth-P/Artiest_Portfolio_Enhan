@@ -48,15 +48,15 @@ const Hero = ({ introComplete = false }) => {
       // PITTURA Hero Image - MUST match the final image from intro (IMG_2093) for seamless transition
       src: '/assets1/IMG_2093.JPG',
       background: '/assets1/IMG_2093.JPG',  // Same as intro final image for smooth transition
-      title: 'PITTURA, Where The Art Speaks',
-      date: 'Sandhiya • Handcrafted Art',
+      title: 'PITTURA Where The Art Speaks',
+      // date: 'Sandhiya • Handcrafted Art',
       scrollToExpand: 'Scroll to Explore',
     },
     video: {
       src: 'https://assets.mixkit.co/videos/preview/mixkit-artist-painting-on-canvas-43866-large.mp4',
       background: '/assets1/IMG_2093.JPG',
       title: 'PITTURA, Where The Art Speaks',
-      date: 'Sandhiya • Handcrafted Art',
+      // date: 'Sandhiya • Handcrafted Art',
       scrollToExpand: 'Scroll to Explore',
     }
   });
