@@ -103,10 +103,10 @@ const Contact = () => {
                 {/* Contact Info - Left Side */}
                 <div className="lg:w-2/5" data-animate="fade-left">
                     <span className="inline-block text-[0.8rem] font-semibold tracking-[3px] uppercase text-gold-500 mb-[15px]">
-                        Get In Touch
+                        Contact
                     </span>
                     <h2 className="font-[var(--font-display)] text-[clamp(2rem,4vw,3rem)] font-semibold text-[#2a2a2a] mb-5">
-                        Get in touch <span className="text-gold-500 italic">with me</span>
+                        Let's Create  <span className="text-gold-500 italic">Something</span>
                     </h2>
                     <p className="text-[1rem] text-[#525252] leading-[1.8] mb-10">
                         Fill out the form and I'll get back to you within 24-48 hours to discuss your project and provide a
