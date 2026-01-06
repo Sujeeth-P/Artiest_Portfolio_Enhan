@@ -87,9 +87,9 @@ function App() {
 
       <Hero introComplete={introComplete} />
 
-      <GuidedGallery />
-      <WorksGallery onViewArtwork={handleViewArtwork} />
+      {/* <GuidedGallery /> */}
       <Services />
+      <WorksGallery onViewArtwork={handleViewArtwork} />
       <ClientWork />
       <About />
       <Contact />

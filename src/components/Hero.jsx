@@ -30,7 +30,7 @@ const MediaContent = ({ mediaType }) => {
         {current.quote}
       </blockquote>
       <p
-        className='text-lg mb-12'
+        className='text-lg mb-4'
         style={{ color: '#1c1913ff' }}
       >
         {current.author}

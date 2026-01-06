@@ -58,13 +58,6 @@ const Services = () => {
     return (
         <section className="services-section" id="services" ref={containerRef}>
             <div className="services-container">
-                {/* Quote Section */}
-                <div className="services-quote" data-animate="fade-up">
-                    <blockquote>
-                        "Art enables us to find ourselves and lose ourselves at the same time." — Thomas Merton
-                    </blockquote>
-                </div>
-
                 {/* Header */}
                 <div className="services-header" data-animate="fade-up">
                     <h2 className="services-title">WHAT CAN I DO FOR YOU?</h2>
@@ -111,7 +104,7 @@ const Services = () => {
 
             <style>{`
                 .services-section {
-                    padding: 100px 40px;
+                    padding:10px 20px 100px 40px;
                     background: #fcf7e7;
                 }
 
