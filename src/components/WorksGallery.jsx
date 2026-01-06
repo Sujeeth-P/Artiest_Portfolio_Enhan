@@ -34,7 +34,7 @@ const WorksGallery = ({ onViewArtwork }) => {
         },
         {
             id: 3,
-            image: '/assets1/IMG_2093.JPG',
+            image: '/assets1/IMG_2011.JPG',
             title: 'Letter Block Creation',
             category: 'Decor',
             medium: 'Mixed Media',
@@ -264,8 +264,16 @@ const WorksGallery = ({ onViewArtwork }) => {
                 </div>
             </div>
 
+            {/* Spacer for smooth transition to next section */}
+            <div className="works-spacer"></div>
+
             <style>{`
                 .works-section {
+                    background: #fcf7e7;
+                }
+
+                .works-spacer {
+                    height: 60px;
                     background: #fcf7e7;
                 }
 

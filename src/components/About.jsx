@@ -8,7 +8,7 @@ const About = () => {
     };
 
     return (
-        <section className="py-[120px] px-10 bg-[#fcf7e7]" id="about">
+        <section className="pt-16 pb-[120px] px-10 bg-[#fcf7e7]" id="about">
             <div className="max-w-[1200px] mx-auto">
                 {/* Section Header */}
                 <div className="text-center mb-16" data-animate="fade-up">
@@ -25,7 +25,7 @@ const About = () => {
                     <div className="relative flex-shrink-0 lg:w-2/5" data-animate="fade-left">
                         <div className="relative w-full max-w-[400px] h-[500px] rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
                             <img
-                                src="/assets1/IMG_2011.JPG"
+                                src="/assets1/Untitled.jpg"
                                 alt="Sandhiya - PITTURA Artist"
                                 className="w-full h-full object-cover"
                             />
