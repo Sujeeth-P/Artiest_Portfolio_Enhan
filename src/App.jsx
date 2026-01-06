@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import ElenaIntro from './components/ElenaIntro';
 import Hero from './components/Hero';
 import GuidedGallery from './components/GuidedGallery';
-import WorksGallery from './components/WorksGallery';
+import CircularArtworkGallery from './components/CircularArtworkGallery';
 import Services from './components/Services';
 import ClientWork from './components/ClientWork';
 import About from './components/About';
@@ -89,7 +89,7 @@ function App() {
 
       {/* <GuidedGallery /> */}
       <Services />
-      <WorksGallery onViewArtwork={handleViewArtwork} />
+      <CircularArtworkGallery onViewArtwork={handleViewArtwork} />
       <ClientWork />
       <About />
       <Contact />
