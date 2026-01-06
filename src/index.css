@@ -132,6 +132,22 @@ body {
   animation-delay: 1.2s;
 }
 
+/* Marquee Animation for Testimonials */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+  will-change: transform;
+}
+
 /* =====================================================
    SHINY TEXT EFFECT (Looping shimmer)
    ===================================================== */
@@ -1265,7 +1281,7 @@ section.scroll-animate {
 
 /* Content Overlay - positioned on left side */
 .hero-content-overlay {
-  position: relative; 
+  position: relative;
   z-index: 3;
   display: flex;
   align-items: center;

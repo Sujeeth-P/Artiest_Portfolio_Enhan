@@ -1,4 +1,4 @@
-import TestimonialV2 from './ui/TestimonialV2';
+import TestimonialsWithMarquee from './ui/testimonials-with-marquee';
 
 const ClientWork = () => {
     const processSteps = [
@@ -26,13 +26,13 @@ const ClientWork = () => {
 
     return (
         <>
-            {/* New Animated Testimonials Section */}
-            <TestimonialV2 />
+            {/* Marquee Testimonials Section */}
+            <TestimonialsWithMarquee />
 
             {/* Process Section - HOW DO WE WORK? */}
-            <section className="py-[80px] px-10 bg-[#fcf7e7]" id="client-work">
+            <section className="py-10 px-10 bg-[#fcf7e7]" id="client-work">
                 <div className="max-w-[1200px] mx-auto">
-                    <h3 className="font-[var(--font-display)] text-[1.8rem] font-semibold text-[#1a1a1a] text-center mb-[50px]" data-animate="fade-up">
+                    <h3 className="font-[var(--font-display)] text-[1.8rem] font-semibold text-[#1a1a1a] text-center mb-8" data-animate="fade-up">
                         HOW DO WE WORK?
                     </h3>
                     <div className="flex flex-wrap justify-center items-start gap-0 process-steps-container">

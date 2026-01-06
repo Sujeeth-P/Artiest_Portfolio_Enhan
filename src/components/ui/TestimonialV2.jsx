@@ -141,7 +141,7 @@ const TestimonialsSection = () => {
     return (
         <section
             aria-labelledby="client-stories-heading"
-            className="bg-[#fcf7e7] py-24 relative overflow-hidden"
+            className="bg-[#fcf7e7] py-12 relative overflow-hidden"
             id="client-stories"
         >
             <motion.div
@@ -155,23 +155,23 @@ const TestimonialsSection = () => {
                 }}
                 className="container px-4 z-10 mx-auto"
             >
-                <div className="flex flex-col items-center justify-center max-w-[540px] mx-auto mb-16">
+                <div className="flex flex-col items-center justify-center max-w-[540px] mx-auto mb-8">
                     <div className="flex justify-center">
                         <div className="border border-[#d4c4a0] py-1 px-4 rounded-full text-xs font-semibold tracking-wide uppercase text-[#b9963f] bg-[#f5efd9] transition-colors">
                             Client Stories
                         </div>
                     </div>
 
-                    <h2 id="client-stories-heading" className="text-4xl md:text-5xl font-[var(--font-display)] font-extrabold tracking-tight mt-6 text-center text-[#1a1a1a] transition-colors">
+                    <h2 id="client-stories-heading" className="text-4xl md:text-5xl font-[var(--font-display)] font-extrabold tracking-tight mt-4 text-center text-[#1a1a1a] transition-colors">
                         What Our Customers Say
                     </h2>
-                    <p className="text-center mt-5 text-[#7a7a7a] text-lg leading-relaxed max-w-sm transition-colors">
+                    <p className="text-center mt-3 text-[#7a7a7a] text-lg leading-relaxed max-w-sm transition-colors">
                         Discover how customers cherish their personalized art pieces and preserved memories.
                     </p>
                 </div>
 
                 <div
-                    className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] max-h-[740px] overflow-hidden"
+                    className="flex justify-center gap-6 mt-6 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] max-h-[740px] overflow-hidden"
                     role="region"
                     aria-label="Scrolling Client Stories"
                 >
