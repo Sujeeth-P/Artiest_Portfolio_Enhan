@@ -166,7 +166,7 @@ const ScrollExpandMedia = ({
                         <div className='absolute inset-0 bg-black/10' />
                         {/* Center vignette - fade to black on background */}
                         <div className='absolute inset-0' style={{
-                            background: 'radial-gradient(ellipse 30% 35% at center 34%, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 37%, rgba(0, 0, 0, 0.4) 55%, transparent 100%)'
+                            background: 'radial-gradient(ellipse 40% 50% at center 45%, rgba(0, 0, 0, 0.9) 1%, rgba(0, 0, 0, 0.7) 40%, rgba(0, 0, 0, 0.4) 55%, transparent 100%)'
                         }} />
                     </motion.div>
 
@@ -323,7 +323,7 @@ const ScrollExpandMedia = ({
                         </div>
 
                         <motion.section
-                            className='flex flex-col w-full px-8 py-10 md:px-16 lg:py-20'
+                            className='flex flex-col w-full'
                             initial={{ opacity: 0 }}
                             animate={{ opacity: showContent ? 1 : 0 }}
                             transition={{ duration: 0.7 }}
