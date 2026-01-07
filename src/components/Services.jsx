@@ -17,8 +17,8 @@ const Services = () => {
     const services = [
         {
             label: 'Floral',
-            title: 'Wedding Floral Preservation',
-            description: 'Your special wedding flowers preserved forever in elegant resin art, capturing the magic and emotions of your most cherished day.',
+            title: 'Floral Preservation',
+            description: 'Your special flowers—wedding, farewell, or celebration—preserved forever, exactly as they were.',
             image: '/assets1/IMG_2094.JPG'
         },
         {
@@ -50,6 +50,18 @@ const Services = () => {
             title: 'Wooden Serving Trays',
             description: 'Functional, elegant trays crafted to elevate everyday moments.',
             image: '/assets1/IMG_2093.JPG'
+        },
+        {
+            label: 'Nail Art',
+            title: 'Resin Nail Art',
+            description: 'Tiny art pieces for your hands—customised, detailed, and unique.',
+            image: '/assets1/Untitled.jpg'
+        },
+        {
+            label: 'Teak',
+            title: 'Teak Wood Frames',
+            description: 'Timeless teak wood frames that give your memories the strength and elegance they deserve.',
+            image: '/assets1/IMG_2011.JPG'
         }
     ];
 
@@ -201,7 +213,7 @@ const Services = () => {
                                 ref={el => cardsRef.current[index] = el}
                                 className="service-card"
                                 style={{
-                                    transform: `rotateY(${index * (360 / services.length)}deg) translateZ(320px)`
+                                    transform: `rotateY(${index * (360 / services.length)}deg) translateZ(380px)`
                                 }}
                             >
                                 <div className="service-card-image">
@@ -280,7 +292,7 @@ const Services = () => {
                 }
 
                 .services-spacer {
-                    height: 60px;
+                    height: 150px;
                     background: #fcf7e7;
                 }
 
