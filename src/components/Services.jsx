@@ -49,13 +49,13 @@ const Services = () => {
             label: 'Functional',
             title: 'Wooden Serving Trays',
             description: 'Functional, elegant trays crafted to elevate everyday moments.',
-            image: '/assets1/IMG_2093.JPG'
+            image: '/assets1/IMG_2011.JPG'
         },
         {
             label: 'Nail Art',
             title: 'Resin Nail Art',
             description: 'Tiny art pieces for your hands—customised, detailed, and unique.',
-            image: '/assets1/Untitled.jpg'
+            image: '/assets1/IMG_2092.JPG'
         },
         {
             label: 'Teak',
