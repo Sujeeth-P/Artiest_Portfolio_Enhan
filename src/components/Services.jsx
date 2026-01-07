@@ -195,10 +195,6 @@ const Services = () => {
                 <div className="services-header-content">
                     <span className="services-label">Services</span>
                     <h2 className="services-title">WHAT CAN I DO FOR YOU?</h2>
-                    <p className="services-subtitle">
-                        Everything is custom-made to suit your idea, your occasion, and your preferences.
-                        You can choose the colours, materials, size, and details!
-                    </p>
                 </div>
             </div>
 
@@ -274,14 +270,20 @@ const Services = () => {
             </div>
 
             {/* Bottom CTA */}
-            {/* <div className="services-cta-section">
-                <a href="#contact" onClick={scrollToContact} className="services-cta">
-                    Start Your Custom Order
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                </a>
-            </div> */}
+            <div className="services-cta-section">
+                <div className="services-cta-box">
+                    <p className="services-subtitle">
+                        Everything is custom-made to suit your idea, your occasion, and your preferences.
+                        You can choose the colours, materials, size, and details!
+                    </p>
+                    <a href="#contact" onClick={scrollToContact} className="services-cta">
+                        Start Your Custom Order
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
 
             {/* Spacer for smooth transition */}
             <div className="services-spacer"></div>
@@ -298,10 +300,10 @@ const Services = () => {
 
                 /* Header Section */
                 .services-header {
-                    padding: 100px 40px 80px;
+                    padding: 80px 40px 0px;
                     text-align: center;
                     position: relative;
-                    background: linear-gradient(180deg, #fcf7e7 0%, #f8f3e3 100%);
+                    // background: linear-gradient(180deg, #fcf7e7 0%, #f8f3e3 100%);
                 }
 
                 .services-header-content {
@@ -578,6 +580,24 @@ const Services = () => {
                     text-align: center;
                     padding: 60px 40px;
                     background: #fcf7e7;
+                }
+
+                .services-cta-box {
+                    display: inline-block;
+                    max-width: 700px;
+                    padding: 50px 60px;
+                    background: rgba(255, 255, 255, 0.7);
+                    border: 1px solid rgba(185, 150, 63, 0.2);
+                    border-radius: 20px;
+                    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
+                    backdrop-filter: blur(10px);
+                }
+
+                .services-cta-box .services-subtitle {
+                    font-size: 1.1rem;
+                    color: #5a5a5a;
+                    line-height: 1.9;
+                    margin: 0 0 30px 0;
                 }
 
                 .services-cta {
