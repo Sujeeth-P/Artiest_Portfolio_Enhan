@@ -65,22 +65,21 @@ const Navbar = () => {
                 shadow-[0_4px_24px_rgba(0,0,0,0.15)]
                 ${scrolled ? 'shadow-[0_8px_32px_rgba(0,0,0,0.2)]' : ''}`}
             >
-                {/* Logo - Pentagon shape with gold gradient */}
+                {/* Logo - Pittura by Sandhiya */}
                 <a
                     href="#home"
                     onClick={(e) => scrollToSection(e, '#home')}
-                    className="relative flex items-center justify-center w-10 h-10 
-                        bg-gradient-to-br from-[#c9a961] to-[#b8963f] 
-                        hover:from-[#d4af6a] hover:to-[#c9a961]
-                        transition-all duration-300 group"
-                    style={{
-                        clipPath: 'polygon(20% 0%, 100% 0%, 100% 100%, 20% 100%, 0% 50%)'
-                    }}
+                    className="relative flex items-center justify-center w-11 h-11 
+                        rounded-full overflow-hidden
+                        ring-2 ring-[#c9a961]/50 hover:ring-[#c9a961]
+                        transition-all duration-300 group
+                        hover:scale-105 hover:shadow-[0_0_20px_rgba(201,169,97,0.4)]"
                 >
-                    <span className="font-[var(--font-display)] text-[1.2rem] font-bold text-[#2a2a2a] 
-                        group-hover:scale-110 transition-transform duration-300 ml-1">
-                        P
-                    </span>
+                    <img
+                        src="/logo.png"
+                        alt="Pittura by Sandhiya"
+                        className="w-full h-full object-cover"
+                    />
                 </a>
 
                 {/* Navigation Links - Clean minimal style */}

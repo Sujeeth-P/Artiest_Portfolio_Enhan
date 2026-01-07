@@ -148,7 +148,7 @@ const ElenaIntro = ({ onComplete }) => {
                                     <img className="elena__cover-image-extra is--2" src="/assets1/IMG_2095.JPG" alt="" />
                                     <img className="elena__cover-image-extra is--3" src="/assets1/IMG_2096.JPG" alt="" />
                                     {/* Final image - will crossfade smoothly to Hero */}
-                                    <img className="elena__cover-image" src="/assets1/IMG_2093.JPG" alt="" />
+                                    <img className="elena__cover-image" src="/assets1/IMG_2011.JPG" alt="" />
                                 </div>
                             </div>
                         </div>

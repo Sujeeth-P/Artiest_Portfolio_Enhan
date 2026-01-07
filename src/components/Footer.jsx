@@ -39,12 +39,25 @@ const Footer = () => {
         <footer className="py-16 px-10 bg-[#fcf7e7] border-t border-[#e8dfd3]">
             <div className="max-w-[1200px] mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-10">
-                    {/* Brand */}
-                    <div className="text-center md:text-left">
-                        <span className="font-[var(--font-display)] text-[1.8rem] font-semibold text-[#2a2a2a] tracking-[1px]">
-                            Sandhiya
-                        </span>
-                        <p className="text-[#6b6b6b] mt-1">Professional Artist & Painter</p>
+                    {/* Brand with Logo */}
+                    <div className="flex items-center gap-4 text-center md:text-left">
+                        <a href="#home" onClick={(e) => scrollToSection(e, '#home')}
+                            className="flex-shrink-0 w-14 h-14 rounded-full overflow-hidden
+                               ring-2 ring-[#c9a961]/50 hover:ring-[#c9a961]
+                               transition-all duration-300
+                               hover:scale-105 hover:shadow-[0_0_20px_rgba(201,169,97,0.3)]">
+                            <img
+                                src="/logo.png"
+                                alt="Pittura by Sandhiya"
+                                className="w-full h-full object-cover"
+                            />
+                        </a>
+                        <div>
+                            <span className="font-[var(--font-display)] text-[1.8rem] font-semibold text-[#2a2a2a] tracking-[1px]">
+                                Sandhiya
+                            </span>
+                            <p className="text-[#6b6b6b] mt-1">Professional Artist & Painter</p>
+                        </div>
                     </div>
 
                     {/* Links */}

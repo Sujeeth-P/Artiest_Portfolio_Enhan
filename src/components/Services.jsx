@@ -436,7 +436,8 @@ const Services = () => {
                 .service-content-box {
                     flex: 0 0 520px;
                     max-width: 520px;
-                    padding: 40px;
+                    padding-left: 40px;
+                    margin-left: 20%;
                     margin-right: 60px;
                 }
 
