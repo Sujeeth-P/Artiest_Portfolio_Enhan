@@ -249,9 +249,9 @@ const Services = () => {
                     {/* Fixed UI Elements */}
                     <div className="services-ui">
                         <div className="services-counter">
-                            <span className="services-counter-current">{String(currentIndex + 1).padStart(2, '0')}</span>
+                            {/* <span className="services-counter-current">{String(currentIndex + 1).padStart(2, '0')}</span>
                             <span className="services-counter-sep">/</span>
-                            <span className="services-counter-total">{String(services.length).padStart(2, '0')}</span>
+                            <span className="services-counter-total">{String(services.length).padStart(2, '0')}</span> */}
                         </div>
                         <div className="services-progress-bar">
                             <div
@@ -578,7 +578,7 @@ const Services = () => {
                 /* Bottom CTA Section */
                 .services-cta-section {
                     text-align: center;
-                    padding: 60px 40px;
+                    padding: 20px 40px;
                     background: #fcf7e7;
                 }
 

@@ -200,9 +200,9 @@ const WorksGallery = ({ onViewArtwork }) => {
                         Some moments are too important to fade with time. I believe preserving them allows us to
                         relive emotions, stories, and connections, long after the moment has passed.
                     </p>
-                    <p className="works-subtitle" style={{ marginTop: '10px', fontSize: '0.95rem' }}>
+                    {/* <p className="works-subtitle" style={{ marginTop: '10px', fontSize: '0.95rem' }}>
                         Explore my complete portfolio to see how your memories are transformed into handcrafted art.
-                    </p>
+                    </p> */}
                 </div>
             </div>
 
@@ -244,9 +244,9 @@ const WorksGallery = ({ onViewArtwork }) => {
                     {/* Fixed UI Elements */}
                     <div className="works-ui">
                         <div className="counter">
-                            <span className="counter-current">{String(currentIndex + 1).padStart(2, '0')}</span>
+                            {/* <span className="counter-current">{String(currentIndex + 1).padStart(2, '0')}</span>
                             <span className="counter-sep">/</span>
-                            <span className="counter-total">{String(artworks.length).padStart(2, '0')}</span>
+                            <span className="counter-total">{String(artworks.length).padStart(2, '0')}</span> */}
                         </div>
                         <div className="progress-bar">
                             <div
@@ -255,9 +255,9 @@ const WorksGallery = ({ onViewArtwork }) => {
                             ></div>
                         </div>
                         <div className="scroll-hint">
-                            <span>Scroll</span>
+                            {/* <span>Scroll</span> */}
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
+                                {/* <path d="M5 12h14M12 5l7 7-7 7" /> */}
                             </svg>
                         </div>
                     </div>
@@ -279,10 +279,10 @@ const WorksGallery = ({ onViewArtwork }) => {
 
                 /* Header Section - Modern Design */
                 .works-header {
-                    padding: 100px 40px 80px;
+                    padding: 100px 40px 1px;
                     text-align: center;
                     position: relative;
-                    background: linear-gradient(180deg, #fcf7e7 0%, #f8f3e3 100%);
+                    // background: linear-gradient(180deg, #fcf7e7 0%, #f8f3e3 100%);
                 }
 
                 .header-content {
