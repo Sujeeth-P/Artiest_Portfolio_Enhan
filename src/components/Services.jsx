@@ -722,7 +722,7 @@ const Services = () => {
                     }
 
                     .service-card {
-                        width: 260px;
+                        width: 234px;
                         margin-top: -210px;
                         margin-left: -130px;
                     }
