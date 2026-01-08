@@ -191,23 +191,20 @@ const WorksGallery = ({ onViewArtwork }) => {
 
     return (
         <section ref={sectionRef} className="works-section" id="artworks">
-            {/* Header - Scrolls in vertically first */}
-            <div ref={headerRef} className="works-header">
-                <div className="header-content">
-                    <span className="works-label">Portfolio</span>
-                    <h2 className="works-title">ART WORKS</h2>
-                    <p className="works-subtitle">
-                        Some moments are too important to fade with time. I believe preserving them allows us to
-                        relive emotions, stories, and connections, long after the moment has passed.
-                    </p>
-                    {/* <p className="works-subtitle" style={{ marginTop: '10px', fontSize: '0.95rem' }}>
-                        Explore my complete portfolio to see how your memories are transformed into handcrafted art.
-                    </p> */}
-                </div>
-            </div>
-
-            {/* Pinned Container for Horizontal Scroll */}
+            {/* Pinned Container for Horizontal Scroll - Header inside */}
             <div ref={containerRef} className="works-container">
+                {/* Header - Now inside the pinned container */}
+                <div ref={headerRef} className="works-header">
+                    <div className="header-content">
+                        <span className="works-label">Portfolio</span>
+                        <h2 className="works-title">ART WORKS</h2>
+                        <p className="works-subtitle">
+                            Some moments are too important to fade with time. I believe preserving them allows us to
+                            relive emotions, stories, and connections, long after the moment has passed.
+                        </p>
+                    </div>
+                </div>
+
                 <div className="works-inner">
                     {/* Track */}
                     <div ref={trackRef} className="works-track">
@@ -240,26 +237,20 @@ const WorksGallery = ({ onViewArtwork }) => {
                             </div>
                         ))}
                     </div>
+                </div>
 
-                    {/* Fixed UI Elements */}
-                    <div className="works-ui">
-                        <div className="counter">
-                            {/* <span className="counter-current">{String(currentIndex + 1).padStart(2, '0')}</span>
-                            <span className="counter-sep">/</span>
-                            <span className="counter-total">{String(artworks.length).padStart(2, '0')}</span> */}
-                        </div>
-                        <div className="progress-bar">
-                            <div
-                                className="progress-fill"
-                                style={{ width: `${progress * 100}%` }}
-                            ></div>
-                        </div>
-                        <div className="scroll-hint">
-                            {/* <span>Scroll</span> */}
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                {/* <path d="M5 12h14M12 5l7 7-7 7" /> */}
-                            </svg>
-                        </div>
+                {/* Fixed UI Elements */}
+                <div className="works-ui">
+                    <div className="counter"></div>
+                    {/* <div className="progress-bar"> */}
+                        {/* <div
+                            className="progress-fill"
+                            style={{ width: `${progress * 100}%` }}
+                        ></div> */}
+                    {/* </div> */}
+                    <div className="scroll-hint">
+                        {/* <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        </svg> */}
                     </div>
                 </div>
             </div>
@@ -275,14 +266,6 @@ const WorksGallery = ({ onViewArtwork }) => {
                 .works-spacer {
                     height: 60px;
                     background: #fcf7e7;
-                }
-
-                /* Header Section - Modern Design */
-                .works-header {
-                    padding: 100px 40px 1px;
-                    text-align: center;
-                    position: relative;
-                    // background: linear-gradient(180deg, #fcf7e7 0%, #f8f3e3 100%);
                 }
 
                 .header-content {
@@ -324,7 +307,7 @@ const WorksGallery = ({ onViewArtwork }) => {
                     text-transform: uppercase;
                     letter-spacing: 5px;
                     color: #b8963f;
-                    margin-bottom: 20px;
+                    margin-bottom: 10px;
                     padding: 8px 20px;
                     border: 1px solid rgba(185, 150, 63, 0.3);
                     border-radius: 30px;
@@ -333,8 +316,8 @@ const WorksGallery = ({ onViewArtwork }) => {
 
                 .works-title {
                     font-family: 'Cormorant Garamond', serif;
-                    font-size: clamp(3rem, 7vw, 5rem);
-                    font-weight: 400;
+                    font-size: clamp(3rem, 3vw, 5rem);
+                    font-weight: 500;
                     color: #1a1a1a;
                     margin: 0 0 20px 0;
                     line-height: 1.1;
@@ -449,18 +432,34 @@ const WorksGallery = ({ onViewArtwork }) => {
                     50% { transform: translateY(8px); }
                 }
 
-                /* Pinned Container */
+                /* Pinned Container - Header + Gallery together */
                 .works-container {
                     height: 100vh;
                     overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    background: #fcf7e7;
+                }
+
+                /* Header inside pinned container */
+                .works-header {
+                    padding: 45px 40px 5px;
+                    text-align: center;
+                    flex-shrink: 0;
+                    background: #fcf7e7;
+                    position: relative;
+                    z-index: 10;
                 }
 
                 .works-inner {
                     position: relative;
-                    height: 100%;
+                    flex: 1;
                     display: flex;
-                    align-items: center;
+                    align-items: flex-start;
                     padding-left: 60px;
+                    padding-top: 7px;
+                    min-height: 0;
+                    overflow: hidden;
                 }
 
                 .works-track {
@@ -481,7 +480,7 @@ const WorksGallery = ({ onViewArtwork }) => {
                 .card-image {
                     position: relative;
                     width: 100%;
-                    height: 440px;
+                    height: 370px;
                     border-radius: 12px;
                     overflow: hidden;
                     background: #e8dfd3;
@@ -667,29 +666,66 @@ const WorksGallery = ({ onViewArtwork }) => {
 
                 @media (max-width: 768px) {
                     .works-header {
-                        padding: 80px 25px 40px;
+                        padding: 60px 20px 12px;
+                    }
+
+                    .works-label {
+                        font-size: 0.6rem;
+                        letter-spacing: 3px;
+                        margin-bottom: 8px;
+                        padding: 5px 14px;
+                    }
+
+                    .works-title {
+                        font-size: clamp(1.8rem, 8vw, 2.5rem);
+                        margin: 0 0 20px 0;
+                    }
+
+                    .works-subtitle {
+                        font-size: 0.85rem;
+                        line-height: 1.5;
+                        margin: 0;
                     }
 
                     .works-inner {
-                        padding-left: 25px;
+                        padding-left: 15px;
+                        align-items: flex-start;
+                        padding-top: 30px;
                     }
 
                     .works-track {
-                        gap: 20px;
+                        gap: 12px;
                     }
 
                     .work-card {
-                        width: 260px;
+                        width: 200px;
                     }
 
                     .card-image {
-                        height: 320px;
+                        height: 240px;
+                    }
+
+                    .card-info {
+                        padding: 8px 2px;
+                    }
+
+                    .card-category {
+                        font-size: 0.6rem;
+                    }
+
+                    .card-title {
+                        font-size: 1rem;
+                        margin: 4px 0;
+                    }
+
+                    .card-meta {
+                        font-size: 0.75rem;
                     }
 
                     .works-ui {
-                        left: 25px;
-                        right: 25px;
-                        bottom: 30px;
+                        left: 15px;
+                        right: 15px;
+                        bottom: 10px;
                     }
 
                     .progress-bar {
@@ -697,7 +733,7 @@ const WorksGallery = ({ onViewArtwork }) => {
                     }
 
                     .counter-current {
-                        font-size: 1.6rem;
+                        font-size: 1.4rem;
                     }
                 }
             `}</style>
