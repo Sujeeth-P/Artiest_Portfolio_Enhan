@@ -93,47 +93,47 @@ const Contact = () => {
     ];
 
     return (
-        <section className="relative py-16 px-4 md:py-[120px] md:px-10 bg-[#fcf7e7]" id="contact">
+        <section className="relative py-12 px-4 md:py-16 lg:py-[120px] md:px-6 lg:px-10 bg-[#fcf7e7]" id="contact">
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#fcf7e7] to-[#f5f0e8]" />
             </div>
 
-            <div className="relative z-[1] max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-10 lg:gap-[60px]">
+            <div className="relative z-[1] max-w-[1200px] mx-auto flex flex-col md:flex-row gap-8 md:gap-8 lg:gap-[60px]">
                 {/* Contact Info - Left Side */}
-                <div className="lg:w-2/5" data-animate="fade-left">
-                    <span className="inline-block text-[0.8rem] font-semibold tracking-[3px] uppercase text-gold-500 mb-[15px]">
+                <div className="md:w-2/5 lg:w-2/5" data-animate="fade-left">
+                    <span className="inline-block text-[0.75rem] md:text-[0.8rem] font-semibold tracking-[3px] uppercase text-gold-500 mb-[10px] md:mb-[15px]">
                         Contact
                     </span>
-                    <h2 className="font-[var(--font-display)] text-[clamp(2rem,4vw,3rem)] font-semibold text-[#2a2a2a] mb-5">
+                    <h2 className="font-[var(--font-display)] text-[clamp(1.6rem,4vw,3rem)] font-semibold text-[#2a2a2a] mb-3 md:mb-5">
                         Let's Create  <span className="text-gold-500 italic">Something</span>
                     </h2>
-                    <p className="text-[1rem] text-[#525252] leading-[1.8] mb-10">
+                    <p className="text-[0.9rem] md:text-[1rem] text-[#525252] leading-[1.7] md:leading-[1.8] mb-6 md:mb-10">
                         Fill out the form and I'll get back to you within 24-48 hours to discuss your project and provide a
                         personalized quote.
                     </p>
 
-                    <div className="space-y-6 mb-10">
+                    <div className="space-y-4 md:space-y-5 lg:space-y-6 mb-6 md:mb-8 lg:mb-10">
                         {contactInfo.map((info, index) => (
-                            <div key={index} className="flex items-start gap-4">
-                                <div className="w-12 h-12 flex items-center justify-center bg-[#e8dfd3] rounded-xl text-gold-500">
+                            <div key={index} className="flex items-start gap-3 md:gap-4">
+                                <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-[#e8dfd3] rounded-lg md:rounded-xl text-gold-500">
                                     {info.icon}
                                 </div>
                                 <div>
-                                    <span className="block text-[0.85rem] text-[#8a8a8a] mb-1">{info.label}</span>
+                                    <span className="block text-[0.8rem] md:text-[0.85rem] text-[#8a8a8a] mb-0.5 md:mb-1">{info.label}</span>
                                     {info.href ? (
-                                        <a href={info.href} className="text-[#2a2a2a] hover:text-gold-500 transition-colors">
+                                        <a href={info.href} className="text-[0.9rem] md:text-base text-[#2a2a2a] hover:text-gold-500 transition-colors">
                                             {info.value}
                                         </a>
                                     ) : (
-                                        <span className="text-[#2a2a2a]">{info.value}</span>
+                                        <span className="text-[0.9rem] md:text-base text-[#2a2a2a]">{info.value}</span>
                                     )}
                                 </div>
                             </div>
                         ))}
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="flex gap-3 md:gap-4">
                         {socialLinks.map((social, index) => (
                             <a
                                 key={index}
@@ -141,7 +141,7 @@ const Contact = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label={social.name}
-                                className="w-12 h-12 flex items-center justify-center bg-[#e8dfd3] rounded-xl text-[#2a2a2a]
+                                className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-[#e8dfd3] rounded-lg md:rounded-xl text-[#2a2a2a]
                   hover:bg-gold-500 hover:text-white hover:-translate-y-1 transition-all duration-300"
                             >
                                 {social.icon}
@@ -151,9 +151,9 @@ const Contact = () => {
                 </div>
 
                 {/* Contact Form - Right Side */}
-                <div className="lg:w-3/5" data-animate="fade-right">
+                <div className="md:w-3/5 lg:w-3/5" data-animate="fade-right">
                     {!isSubmitted ? (
-                        <form onSubmit={handleSubmit} className="bg-white p-5 md:p-10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.1)]">
+                        <form onSubmit={handleSubmit} className="bg-white p-4 md:p-6 lg:p-10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.1)]">
                             <div className="mb-6">
                                 <label htmlFor="name" className="block text-[0.9rem] font-medium text-[#1a1a1a] mb-2">
                                     Full Name <span className="text-red-500">*</span>

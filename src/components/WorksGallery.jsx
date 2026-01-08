@@ -92,10 +92,10 @@ const WorksGallery = ({ onViewArtwork }) => {
         if (!section || !container || !track || cards.length === 0) return;
 
         const ctx = gsap.context(() => {
-            // Calculate scroll distance
+            // Calculate scroll distance - stop exactly when last image is visible
             const totalWidth = track.scrollWidth;
             const viewportWidth = window.innerWidth;
-            const scrollDistance = totalWidth - viewportWidth + 100;
+            const scrollDistance = totalWidth - viewportWidth;
 
             // Header entrance animation (vertical scroll in)
             gsap.fromTo(
@@ -463,11 +463,10 @@ const WorksGallery = ({ onViewArtwork }) => {
                     padding-left: 60px;
                 }
 
-                /* Horizontal Track */
                 .works-track {
                     display: flex;
                     gap: 35px;
-                    padding-right: 150px;
+                    padding-right: 90px;
                     will-change: transform;
                 }
 
