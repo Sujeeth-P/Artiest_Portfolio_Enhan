@@ -96,17 +96,17 @@ const HowWeWork = () => {
             className="bg-[#fcf7e7] text-[#1a1a1a] py-12 sm:py-16 px-4"
             id="process"
         >
-            <div ref={processRef} className="max-w-[1100px] mx-auto px-4 sm:px-10">
-                <h3 className="font-[var(--font-display)] text-[1.8rem] font-semibold text-[#1a1a1a] text-center mb-12" data-animate="fade-up">
+            <div ref={processRef} className="max-w-[1100px] mx-auto px-4 sm:px-6">
+                <h3 className="font-[var(--font-display)] text-[1.5rem] md:text-[1.8rem] font-semibold text-[#1a1a1a] text-center mb-8 md:mb-12" data-animate="fade-up">
                     HOW DO WE WORK?
                 </h3>
 
-                {/* Steps container - horizontal layout with inline connectors */}
-                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-0">
+                {/* Steps container - 2x2 grid on tablet, horizontal on desktop */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-4">
                     {processSteps.map((step, index) => (
                         <div
                             key={index}
-                            className="flex flex-col lg:flex-row items-center flex-1"
+                            className="flex flex-col items-center"
                         >
                             {/* Step item */}
                             <div
@@ -114,29 +114,29 @@ const HowWeWork = () => {
                                 className="flex flex-col items-center opacity-30"
                             >
                                 {/* The step circle */}
-                                <div className="step-circle w-16 h-16 flex items-center justify-center 
-                                    font-[var(--font-display)] text-[1.5rem] font-bold text-[#b9963f] 
+                                <div className="step-circle w-14 h-14 md:w-16 md:h-16 flex items-center justify-center 
+                                    font-[var(--font-display)] text-[1.3rem] md:text-[1.5rem] font-bold text-[#b9963f] 
                                     bg-[#fcf7e7] rounded-full border-[3px] border-[#d4c4a0]
                                     transition-all duration-300 shadow-md">
                                     {step.number}
                                 </div>
 
                                 {/* Step content */}
-                                <div className="step-content text-center mt-5 px-2 max-w-[180px]">
-                                    <h4 className="font-[var(--font-display)] text-[1.1rem] font-semibold text-[#1a1a1a] mb-2">
+                                <div className="step-content text-center mt-4 md:mt-5 px-2 max-w-[200px] md:max-w-[180px]">
+                                    <h4 className="font-[var(--font-display)] text-[1rem] md:text-[1.1rem] font-semibold text-[#1a1a1a] mb-2">
                                         {step.title}
                                     </h4>
-                                    <p className="text-[0.85rem] text-[#7a7a7a] leading-[1.6]">
+                                    <p className="text-[0.8rem] md:text-[0.85rem] text-[#7a7a7a] leading-[1.6]">
                                         {step.description}
                                     </p>
                                 </div>
                             </div>
 
-                            {/* Connector line between steps (not after last step) */}
+                            {/* Connector line between steps (only visible on large screens) */}
                             {index < processSteps.length - 1 && (
                                 <div
                                     ref={el => linesRef.current[index] = el}
-                                    className="hidden lg:flex flex-1 items-center self-start mt-8 px-2"
+                                    className="hidden lg:hidden flex-1 items-center self-start mt-8 px-2"
                                 >
                                     {/* Base gray line */}
                                     <div className="relative w-full h-[3px] bg-[#e8dfd3] rounded-full overflow-hidden">

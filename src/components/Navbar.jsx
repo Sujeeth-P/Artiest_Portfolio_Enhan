@@ -57,11 +57,11 @@ const Navbar = () => {
 
     return (
         <nav className={`fixed top-0 left-0 right-0 z-[1000] flex justify-center transition-all duration-500
-            ${scrolled ? 'pt-2' : 'pt-6'}`}
+            ${scrolled ? 'pt-2 md:pt-2' : 'pt-3 md:pt-6'}`}
         >
             {/* Floating Pill Container - Centered */}
-            <div className={`inline-flex items-center gap-2 transition-all duration-500
-                bg-[#3a3632] rounded-full pl-2 pr-2 py-2
+            <div className={`inline-flex items-center gap-1.5 md:gap-2 transition-all duration-500
+                bg-[#3a3632] rounded-full pl-1.5 pr-1.5 py-1.5 md:pl-2 md:pr-2 md:py-2
                 shadow-[0_4px_24px_rgba(0,0,0,0.15)]
                 ${scrolled ? 'shadow-[0_8px_32px_rgba(0,0,0,0.2)]' : ''}`}
             >
@@ -69,7 +69,7 @@ const Navbar = () => {
                 <a
                     href="#home"
                     onClick={(e) => scrollToSection(e, '#home')}
-                    className="relative flex items-center justify-center w-11 h-11 
+                    className="relative flex items-center justify-center w-9 h-9 md:w-11 md:h-11 
                         rounded-full overflow-hidden
                         ring-2 ring-[#c9a961]/50 hover:ring-[#c9a961]
                         transition-all duration-300 group

@@ -624,13 +624,21 @@ const Services = () => {
                 /* Responsive */
                 @media (max-width: 1024px) {
                     .services-header {
-                        padding: 100px 40px 50px;
+                        padding: 80px 30px 30px;
                     }
 
                     .services-inner {
                         flex-direction: column;
-                        padding: 40px;
-                        gap: 40px;
+                        padding: 20px 30px;
+                        gap: 20px;
+                        overflow: hidden;
+                    }
+
+                    .services-carousel {
+                        width: 100%;
+                        max-width: 350px;
+                        height: 320px;
+                        margin: 0 auto;
                     }
 
                     .service-content-box {
@@ -638,45 +646,64 @@ const Services = () => {
                         max-width: 100%;
                         width: 100%;
                         margin-right: 0;
-                        padding: 30px;
+                        margin-left: 0;
+                        padding: 15px 20px;
+                        padding-top: 52px;
                         order: -1;
+                        text-align: center;
                     }
 
-                    .service-content-number {
-                        font-size: 2.5rem;
+                    .service-content-label {
+                        margin-bottom: 10px;
                     }
 
                     .service-content-title {
-                        font-size: 1.8rem;
+                        font-size: 1.6rem;
+                        margin-bottom: 10px;
+                    }
+
+                    .service-content-desc {
+                        font-size: 0.95rem;
                     }
 
                     .service-card {
-                        width: 288px;
+                        width: 260px;
+                        margin-left: -130px;
+                        margin-top: -220px;
+                        backface-visibility: hidden;
                     }
 
                     .service-card-image {
-                        height: 360px;
+                        height: 260px;
                     }
 
                     .services-ui {
-                        left: 40px;
-                        right: 40px;
-                        bottom: 40px;
+                        left: 30px;
+                        right: 30px;
+                        bottom: 25px;
                     }
                 }
 
                 @media (max-width: 768px) {
                     .services-header {
-                        padding: 80px 25px 40px;
+                        padding: 40px 20px 0px;
                     }
 
                     .services-inner {
-                        padding: 25px;
-                        gap: 30px;
+                        padding: 0px 20px;
+                        gap: 15px;
                     }
 
                     .service-content-box {
-                        padding: 25px;
+                        padding: 0px 15px;
+                        margin-left: 0;
+                    }
+
+                    .service-content-label {
+                        margin-top: 50px;
+                        margin-bottom: 20px;
+                        padding: 6px 14px;
+                        font-size: 0.65rem;
                     }
 
                     .service-content-number {
@@ -684,27 +711,45 @@ const Services = () => {
                     }
 
                     .service-content-title {
-                        font-size: 1.5rem;
-                        margin: 0 0 12px 0;
+                        font-size: 1.4rem;
+                        margin: 0 0 8px 0;
                     }
 
                     .service-content-desc {
-                        font-size: 0.9rem;
-                        margin: 0 0 20px 0;
+                        font-size: 0.85rem;
+                        margin: 0 0 10px 0;
+                        line-height: 1.6;
                     }
 
                     .service-card {
-                        width: 252px;
+                        width: 260px;
+                        margin-top: -210px;
+                        margin-left: -130px;
                     }
 
                     .service-card-image {
-                        height: 315px;
+                        height: 300px;
+                    }
+
+                    .services-carousel {
+                        height: 380px;
+                        transform-style: preserve-3d;
+                    }
+
+                    /* Hide back-facing cards on mobile for cleaner initial view */
+                    .service-card {
+                        backface-visibility: hidden;
+                    }
+
+                    /* Reduce translateZ for mobile to prevent overlap */
+                    .services-carousel .service-card {
+                        transform-origin: center center;
                     }
 
                     .services-ui {
-                        left: 25px;
-                        right: 25px;
-                        bottom: 30px;
+                        left: 20px;
+                        right: 20px;
+                        bottom: 20px;
                     }
 
                     .services-progress-bar {
@@ -716,7 +761,23 @@ const Services = () => {
                     }
 
                     .services-cta-section {
-                        padding: 40px 25px;
+                        padding: 30px 15px;
+                    }
+
+                    .services-cta-box {
+                        padding: 30px 25px;
+                        border-radius: 16px;
+                    }
+
+                    .services-cta-box .services-subtitle {
+                        font-size: 0.95rem;
+                        line-height: 1.7;
+                        margin: 0 0 20px 0;
+                    }
+
+                    .services-cta {
+                        padding: 14px 28px;
+                        font-size: 0.9rem;
                     }
                 }
             `}</style>

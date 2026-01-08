@@ -93,13 +93,13 @@ const Contact = () => {
     ];
 
     return (
-        <section className="relative py-[120px] px-10 bg-[#fcf7e7]" id="contact">
+        <section className="relative py-16 px-4 md:py-[120px] md:px-10 bg-[#fcf7e7]" id="contact">
             {/* Background */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#fcf7e7] to-[#f5f0e8]" />
             </div>
 
-            <div className="relative z-[1] max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-[60px]">
+            <div className="relative z-[1] max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-10 lg:gap-[60px]">
                 {/* Contact Info - Left Side */}
                 <div className="lg:w-2/5" data-animate="fade-left">
                     <span className="inline-block text-[0.8rem] font-semibold tracking-[3px] uppercase text-gold-500 mb-[15px]">
@@ -153,7 +153,7 @@ const Contact = () => {
                 {/* Contact Form - Right Side */}
                 <div className="lg:w-3/5" data-animate="fade-right">
                     {!isSubmitted ? (
-                        <form onSubmit={handleSubmit} className="bg-white p-10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.1)]">
+                        <form onSubmit={handleSubmit} className="bg-white p-5 md:p-10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.1)]">
                             <div className="mb-6">
                                 <label htmlFor="name" className="block text-[0.9rem] font-medium text-[#1a1a1a] mb-2">
                                     Full Name <span className="text-red-500">*</span>
@@ -241,7 +241,7 @@ const Contact = () => {
                             </button>
                         </form>
                     ) : (
-                        <div className="form-success show bg-white p-10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.1)] text-center">
+                        <div className="form-success show bg-white p-5 md:p-10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.1)] text-center">
                             <div className="w-20 h-20 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2">
                                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
