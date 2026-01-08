@@ -20,28 +20,28 @@ const About = () => {
                     </h2>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-10 lg:gap-[60px] items-center">
+                <div className="flex flex-col md:flex-row gap-8 md:gap-10 lg:gap-[60px] items-center">
                     {/* Image - Left Side */}
-                    <div className="relative flex-shrink-0 w-full lg:w-2/5" data-animate="fade-left">
-                        <div className="relative w-full max-w-[320px] md:max-w-[400px] h-[400px] md:h-[500px] mx-auto rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
+                    <div className="relative flex-shrink-0 w-full md:w-2/5" data-animate="fade-left">
+                        <div className="relative w-full max-w-[280px] md:max-w-[345px] lg:max-w-[400px] h-[350px] md:h-[450px] lg:h-[500px] mx-auto rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
                             <img
                                 src="/assets1/Untitled.jpg"
                                 alt="Sandhiya - PITTURA Artist"
                                 className="w-full h-full object-cover"
                             />
                         </div>
-                        <div className="absolute -bottom-4 right-4 md:-bottom-6 md:-right-6 bg-[#f5f0e8] border border-[#e8dfd3] text-[#2a2a2a] px-5 py-4 md:px-8 md:py-6 rounded-xl 
+                        <div className="absolute -bottom-3 right-2 md:-bottom-4 md:right-4 lg:-bottom-6 lg:-right-6 bg-[#f5f0e8] border border-[#e8dfd3] text-[#2a2a2a] px-4 py-3 md:px-5 md:py-4 lg:px-8 lg:py-6 rounded-xl 
                 shadow-[0_10px_40px_rgba(0,0,0,0.1)]">
-                            <span className="block font-[var(--font-display)] text-[2rem] md:text-[2.5rem] font-semibold text-gold-500 leading-none">
+                            <span className="block font-[var(--font-display)] text-[1.8rem] md:text-[2rem] lg:text-[2.5rem] font-semibold text-gold-500 leading-none">
                                 200+
                             </span>
-                            <span className="text-[0.8rem] md:text-[0.9rem] text-[#6b6b6b]">Artworks Created</span>
+                            <span className="text-[0.75rem] md:text-[0.8rem] lg:text-[0.9rem] text-[#6b6b6b]">Artworks Created</span>
                         </div>
                     </div>
 
                     {/* Content - Right Side */}
-                    <div className="flex-1 mt-6 lg:mt-0" data-animate="fade-right">
-                        <div className="space-y-4 md:space-y-5 text-[0.95rem] md:text-[1rem] text-[#4a4a4a] leading-[1.8] md:leading-[1.9] mb-6 md:mb-8">
+                    <div className="flex-1 mt-4 md:mt-0" data-animate="fade-right">
+                        <div className="space-y-3 md:space-y-4 lg:space-y-5 text-[0.9rem] md:text-[0.95rem] lg:text-[1rem] text-[#4a4a4a] leading-[1.7] md:leading-[1.8] lg:leading-[1.9] mb-5 md:mb-6 lg:mb-8">
                             <p className="text-[1.05rem] md:text-[1.15rem] font-medium text-[#1a1a1a]">
                                 Hello, I am <span className="text-gold-500 italic">Sandhiya</span>.
                             </p>

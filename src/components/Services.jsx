@@ -700,7 +700,7 @@ const Services = () => {
                     }
 
                     .service-content-label {
-                        margin-top: 50px;
+                        margin-top: 65px;
                         margin-bottom: 20px;
                         padding: 6px 14px;
                         font-size: 0.65rem;
@@ -732,7 +732,7 @@ const Services = () => {
                     }
 
                     .services-carousel {
-                        height: 380px;
+                        height: 370px;
                         transform-style: preserve-3d;
                     }
 
