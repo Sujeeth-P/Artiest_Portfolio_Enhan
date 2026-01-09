@@ -190,16 +190,16 @@ const Services = () => {
 
     return (
         <section ref={sectionRef} className="services-section" id="services">
-            {/* Header - Scrolls in vertically first */}
-            <div ref={headerRef} className="services-header">
-                <div className="services-header-content">
-                    <span className="services-label">Services</span>
-                    <h2 className="services-title">WHAT CAN I DO FOR YOU?</h2>
-                </div>
-            </div>
-
-            {/* Pinned Container for Horizontal Scroll */}
+            {/* Pinned Container - Header + Carousel together */}
             <div ref={containerRef} className="services-container">
+                {/* Header - Now inside the pinned container */}
+                <div ref={headerRef} className="services-header">
+                    <div className="services-header-content">
+                        <span className="services-label">Services</span>
+                        <h2 className="services-title">WHAT CAN I DO FOR YOU?</h2>
+                    </div>
+                </div>
+
                 <div className="services-inner">
                     {/* 3D Circular Track - Left Side */}
                     <div ref={trackRef} className="services-carousel">
@@ -245,26 +245,20 @@ const Services = () => {
                             </p>
                         </div>
                     </div>
+                </div>
 
-                    {/* Fixed UI Elements */}
-                    <div className="services-ui">
-                        <div className="services-counter">
-                            {/* <span className="services-counter-current">{String(currentIndex + 1).padStart(2, '0')}</span>
-                            <span className="services-counter-sep">/</span>
-                            <span className="services-counter-total">{String(services.length).padStart(2, '0')}</span> */}
-                        </div>
-                        <div className="services-progress-bar">
-                            <div
-                                className="services-progress-fill"
-                                style={{ width: `${progress * 100}%` }}
-                            ></div>
-                        </div>
-                        <div className="services-scroll-hint">
-                            {/* <span>Scroll</span> */}
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                {/* <path d="M5 12h14M12 5l7 7-7 7" /> */}
-                            </svg>
-                        </div>
+                {/* Fixed UI Elements */}
+                <div className="services-ui">
+                    <div className="services-counter"></div>
+                    {/* <div className="services-progress-bar">
+                        <div
+                            className="services-progress-fill"
+                            style={{ width: `${progress * 100}%` }}
+                        ></div>
+                    </div> */}
+                    <div className="services-scroll-hint">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        </svg>
                     </div>
                 </div>
             </div>
@@ -296,14 +290,6 @@ const Services = () => {
                 .services-spacer {
                     height: 150px;
                     background: #fcf7e7;
-                }
-
-                /* Header Section */
-                .services-header {
-                    padding: 80px 40px 0px;
-                    text-align: center;
-                    position: relative;
-                    // background: linear-gradient(180deg, #fcf7e7 0%, #f8f3e3 100%);
                 }
 
                 .services-header-content {
@@ -343,28 +329,42 @@ const Services = () => {
                     line-height: 1.8;
                 }
 
-                /* Pinned Container */
+                /* Pinned Container - Header + Carousel together */
                 .services-container {
                     height: 100vh;
                     overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    background: #fcf7e7;
+                }
+
+                /* Header inside pinned container */
+                .services-header {
+                    padding: 20px 40px 20px;
+                    text-align: center;
+                    flex-shrink: 0;
+                    background: #fcf7e7;
+                    position: relative;
+                    z-index: 10;
                 }
 
                 .services-inner {
                     position: relative;
-                    height: 100%;
+                    flex: 1;
                     display: flex;
-                    align-items: center;
+                    align-items: flex-start;
                     justify-content: space-between;
-                    padding: 0 60px 0 280px;
+                    padding: 20px 60px 0 280px;
                     perspective: 2000px;
                     overflow: hidden;
+                    min-height: 0;
                 }
 
                 /* 3D Circular Carousel */
                 .services-carousel {
                     position: relative;
                     width: 400px;
-                    height: 550px;
+                    height: 450px;
                     transform-style: preserve-3d;
                     will-change: transform;
                     flex-shrink: 0;
@@ -387,7 +387,7 @@ const Services = () => {
                 .service-card-image {
                     position: relative;
                     width: 100%;
-                    height: 380px;
+                    height: 310px;
                     border-radius: 10px;
                     overflow: hidden;
                     background: #e8dfd3;
@@ -438,6 +438,7 @@ const Services = () => {
                 .service-content-box {
                     flex: 0 0 520px;
                     max-width: 520px;
+                    margin-top: 90px;
                     padding-left: 40px;
                     margin-left: 20%;
                     margin-right: 60px;
