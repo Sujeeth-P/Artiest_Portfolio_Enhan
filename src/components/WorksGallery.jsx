@@ -443,7 +443,7 @@ const WorksGallery = ({ onViewArtwork }) => {
 
                 /* Header inside pinned container */
                 .works-header {
-                    padding: 45px 40px 5px;
+                    padding: 20px 40px 10px;
                     text-align: center;
                     flex-shrink: 0;
                     background: #fcf7e7;

@@ -11,8 +11,10 @@ const Services = () => {
     const trackRef = useRef(null);
     const headerRef = useRef(null);
     const cardsRef = useRef([]);
+    const ctaTextRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [progress, setProgress] = useState(0);
+    const [ctaAnimated, setCtaAnimated] = useState(false);
 
     const services = [
         {
@@ -173,6 +175,55 @@ const Services = () => {
         return () => ctx.revert();
     }, [services.length]);
 
+    // CTA Text Animation (SplitText-like effect)
+    useEffect(() => {
+        // Small delay to ensure DOM is ready after pinned section
+        const timer = setTimeout(() => {
+            const ctaSection = ctaTextRef.current;
+            if (!ctaSection) return;
+
+            const chars = ctaSection.querySelectorAll('.cta-char');
+            const ctaBtn = ctaSection.querySelector('.services-cta');
+
+            if (chars.length === 0) return;
+
+            // Set initial state with GSAP
+            gsap.set(chars, { opacity: 0, y: 30, immediateRender: true });
+            gsap.set(ctaBtn, { opacity: 0, y: 30, immediateRender: true });
+
+            // Create scroll trigger for animation
+            ScrollTrigger.create({
+                trigger: ctaSection,
+                start: "top 85%",
+                // markers: true,
+                onEnter: () => {
+                    // Animate characters with stagger
+                    gsap.to(chars, {
+                        opacity: 1,
+                        y: 0,
+                        stagger: 0.015,
+                        duration: 0.4,
+                        ease: "power2.out",
+                        onComplete: () => {
+                            // Animate button after text
+                            gsap.to(ctaBtn, {
+                                opacity: 1,
+                                y: 0,
+                                duration: 0.5,
+                                ease: "back.out(1.5)"
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Refresh ScrollTrigger after pinned sections
+            ScrollTrigger.refresh();
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, []);
+
     const scrollToContact = (e) => {
         e.preventDefault();
         const target = document.querySelector('#contact');
@@ -263,20 +314,21 @@ const Services = () => {
                 </div>
             </div>
 
-            {/* Bottom CTA */}
-            <div className="services-cta-section">
-                <div className="services-cta-box">
-                    <p className="services-subtitle">
-                        Everything is custom-made to suit your idea, your occasion, and your preferences.
-                        You can choose the colours, materials, size, and details!
-                    </p>
-                    <a href="#contact" onClick={scrollToContact} className="services-cta">
-                        Start Your Custom Order
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                    </a>
-                </div>
+            {/* Bottom CTA - No box, animated text */}
+            <div className="services-cta-section" ref={ctaTextRef}>
+                <p className="services-cta-text">
+                    {'Everything is custom-made to suit your idea, your occasion, and your preferences. You can choose    the colours, materials, size, and details!'.split('').map((char, i) => (
+                        <span key={i} className="cta-char" style={{ display: 'inline-block' }}>
+                            {char === ' ' ? '\u00A0' : char}
+                        </span>
+                    ))}
+                </p>
+                <a href="#contact" onClick={scrollToContact} className="services-cta">
+                    Start Your Custom Order
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
             </div>
 
             {/* Spacer for smooth transition */}
@@ -288,7 +340,7 @@ const Services = () => {
                 }
 
                 .services-spacer {
-                    height: 150px;
+                    height: 40px;
                     background: #fcf7e7;
                 }
 
@@ -364,7 +416,7 @@ const Services = () => {
                 .services-carousel {
                     position: relative;
                     width: 400px;
-                    height: 450px;
+                    height: 470px;
                     transform-style: preserve-3d;
                     will-change: transform;
                     flex-shrink: 0;
@@ -576,29 +628,25 @@ const Services = () => {
                     50% { transform: translateX(5px); }
                 }
 
-                /* Bottom CTA Section */
+                /* Bottom CTA Section - No box, clean layout */
                 .services-cta-section {
                     text-align: center;
-                    padding: 20px 40px;
+                    padding: 100px 40px;
                     background: #fcf7e7;
+                    max-width: 1000px;
+                    margin: 0 auto;
                 }
 
-                .services-cta-box {
+                .services-cta-text {
+                    font-size: 2.15rem;
+                    color: #505050ff;
+                    line-height: 2;
+                    margin: 0 0 50px 0;
+                    font-weight: 800;
+                }
+
+                .cta-char {
                     display: inline-block;
-                    max-width: 700px;
-                    padding: 50px 60px;
-                    background: rgba(255, 255, 255, 0.7);
-                    border: 1px solid rgba(185, 150, 63, 0.2);
-                    border-radius: 20px;
-                    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
-                    backdrop-filter: blur(10px);
-                }
-
-                .services-cta-box .services-subtitle {
-                    font-size: 1.1rem;
-                    color: #5a5a5a;
-                    line-height: 1.9;
-                    margin: 0 0 30px 0;
                 }
 
                 .services-cta {
@@ -612,13 +660,12 @@ const Services = () => {
                     font-size: 0.95rem;
                     text-decoration: none;
                     border-radius: 50px;
-                    transition: all 0.3s ease;
+                    transition: box-shadow 0.3s ease, background 0.3s ease;
                     box-shadow: 0 4px 15px rgba(185, 150, 63, 0.3);
                     pointer-events: all;
                 }
 
                 .services-cta:hover {
-                    transform: translateY(-2px);
                     box-shadow: 0 8px 25px rgba(185, 150, 63, 0.4);
                 }
 
