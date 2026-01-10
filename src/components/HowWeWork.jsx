@@ -143,8 +143,8 @@ const HowWeWork = () => {
             id="process"
         >
             {/* Pinned Wrapper */}
-            <div ref={wrapperRef} className="how-we-work-wrapper min-h-screen flex flex-col justify-center py-16 md:py-20 px-4">
-                {/* Title */}
+            <div ref={wrapperRef} className="how-we-work-wrapper min-h-screen flex flex-col justify-center pt-2 pb-16 md:pt-10 md:pb-20 px-4">
+                {/* Title */}       
                 <div className="text-center mb-12 md:mb-16">
                     <h3 className="font-[var(--font-display)] text-[1.5rem] md:text-[2rem] font-semibold text-[#1a1a1a]">
                         HOW DO WE WORK?

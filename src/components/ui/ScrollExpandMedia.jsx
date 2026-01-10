@@ -250,6 +250,8 @@ const ScrollExpandMedia = ({
                                     maxWidth: '95vw',
                                     maxHeight: '85vh',
                                     boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.3)',
+                                    opacity: Math.min(scrollProgress * 5, 1), // Fade in quickly as scroll starts
+                                    visibility: scrollProgress > 0.02 ? 'visible' : 'hidden',
                                 }}
                             >
                                 {mediaType === 'video' ? (

@@ -1,4 +1,13 @@
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
 const Footer = () => {
+    const footerRef = useRef(null);
+    const waveRef = useRef(null);
+
     const scrollToSection = (e, sectionId) => {
         e.preventDefault();
         const target = document.querySelector(sectionId);
@@ -35,77 +44,193 @@ const Footer = () => {
         }
     ];
 
+    // Bouncy wave animation on scroll
+    useEffect(() => {
+        const footer = footerRef.current;
+        const wave = waveRef.current;
+        if (!footer || !wave) return;
+
+        const ctx = gsap.context(() => {
+            // Initial state - wave is curved/bouncy
+            gsap.set(wave, {
+                scaleY: 1.5,
+                transformOrigin: 'bottom center'
+            });
+
+            ScrollTrigger.create({
+                trigger: footer,
+                start: 'top bottom',
+                onEnter: (self) => {
+                    const velocity = Math.abs(self.getVelocity()) / 10000;
+                    const elasticity = Math.min(1.5 + velocity, 2);
+                    const damping = Math.max(0.3 - velocity * 0.1, 0.2);
+
+                    // Bouncy elastic animation
+                    gsap.to(wave, {
+                        scaleY: 1,
+                        duration: 1.5,
+                        ease: `elastic.out(${elasticity}, ${damping})`,
+                        overwrite: true
+                    });
+                },
+                onLeaveBack: () => {
+                    // Reset wave when scrolling back up
+                    gsap.to(wave, {
+                        scaleY: 1.5,
+                        duration: 0.3,
+                        ease: 'power2.out',
+                        overwrite: true
+                    });
+                }
+            });
+        }, footer);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <footer className="py-10 px-4 md:py-16 md:px-10 bg-[#fcf7e7] border-t border-[#e8dfd3]">
-            <div className="max-w-[1200px] mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8 mb-8 md:mb-10">
-                    {/* Brand with Logo */}
-                    <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 text-center md:text-left">
-                        <a href="#home" onClick={(e) => scrollToSection(e, '#home')}
-                            className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden
-                               ring-2 ring-[#c9a961]/50 hover:ring-[#c9a961]
+        <footer ref={footerRef} className="relative bg-[#fcf7e7]">
+            {/* Bouncy Wave SVG */}
+            <div className="footer-wave-container">
+                <svg
+                    ref={waveRef}
+                    className="footer-wave"
+                    preserveAspectRatio="none"
+                    viewBox="0 0 1440 120"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <defs>
+                        <linearGradient id="footer-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#c9a961" />
+                            <stop offset="50%" stopColor="#d4af6a" />
+                            <stop offset="100%" stopColor="#b8963f" />
+                        </linearGradient>
+                    </defs>
+                    <path
+                        className="footer-wave-path"
+                        fill="url(#footer-gradient)"
+                        d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,80 1440,60 L1440,120 L0,120 Z"
+                    />
+                </svg>
+                {/* Noise texture overlay */}
+                <div className="footer-wave-noise" />
+            </div>
+
+            {/* Footer Content */}
+            <div className="footer-content py-10 px-4 md:py-16 md:px-10 bg-gradient-to-b from-[#c9a961] to-[#b8963f]">
+                <div className="max-w-[1200px] mx-auto">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8 mb-8 md:mb-10">
+                        {/* Brand with Logo */}
+                        <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 text-center md:text-left">
+                            <a href="#home" onClick={(e) => scrollToSection(e, '#home')}
+                                className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden
+                               ring-2 ring-white/50 hover:ring-white
                                transition-all duration-300
-                               hover:scale-105 hover:shadow-[0_0_20px_rgba(201,169,97,0.3)]">
-                            <img
-                                src="/logo.png"
-                                alt="Pittura by Sandhiya"
-                                className="w-full h-full object-cover"
-                            />
-                        </a>
-                        <div className="text-center md:text-left">
-                            <span className="font-[var(--font-display)] text-[1.5rem] md:text-[1.8rem] font-semibold text-[#2a2a2a] tracking-[1px]">
-                                Sandhiya
-                            </span>
-                            <p className="text-[#6b6b6b] text-sm mt-1">Professional Artist & Painter</p>
+                               hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                                <img
+                                    src="/logo.png"
+                                    alt="Pittura by Sandhiya"
+                                    className="w-full h-full object-cover"
+                                />
+                            </a>
+                            <div className="text-center md:text-left">
+                                <span className="font-[var(--font-display)] text-[1.5rem] md:text-[1.8rem] font-semibold text-white tracking-[1px]">
+                                    Sandhiya
+                                </span>
+                                <p className="text-white/80 text-sm mt-1">Professional Artist & Painter</p>
+                            </div>
+                        </div>
+
+                        {/* Links */}
+                        <div className="flex gap-5 md:gap-8 flex-wrap justify-center">
+                            {footerLinks.map(link => (
+                                <a
+                                    key={link.href}
+                                    href={link.href}
+                                    onClick={(e) => scrollToSection(e, link.href)}
+                                    className="text-sm md:text-base text-white/80 hover:text-white transition-colors duration-200"
+                                >
+                                    {link.label}
+                                </a>
+                            ))}
+                        </div>
+
+                        {/* Social Links */}
+                        <div className="flex gap-4">
+                            {socialLinks.map((social, index) => (
+                                <a
+                                    key={index}
+                                    href={social.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={social.name}
+                                    className="w-10 h-10 flex items-center justify-center bg-white/20 rounded-full text-white
+                  hover:bg-white hover:text-[#b8963f] hover:-translate-y-1 transition-all duration-300"
+                                >
+                                    {social.icon}
+                                </a>
+                            ))}
                         </div>
                     </div>
 
-                    {/* Links */}
-                    <div className="flex gap-5 md:gap-8 flex-wrap justify-center">
-                        {footerLinks.map(link => (
-                            <a
-                                key={link.href}
-                                href={link.href}
-                                onClick={(e) => scrollToSection(e, link.href)}
-                                className="text-sm md:text-base text-[#6b6b6b] hover:text-gold-500 transition-colors duration-200"
-                            >
-                                {link.label}
-                            </a>
-                        ))}
+                    {/* Divider */}
+                    <div className="h-px bg-white/30 mb-6 md:mb-8" />
+
+                    {/* Copyright */}
+                    <div className="text-center">
+                        <p className="text-white/80 text-[0.85rem] mb-2">
+                            <span className="font-[var(--font-display)] text-[1rem] text-white font-medium">PITTURA</span>
+                            {' '}by Sandhiya
+                        </p>
+                        <p className="text-white/60 text-[0.85rem]">
+                            © 2025 All rights reserved.
+                        </p>
                     </div>
-
-                    {/* Social Links */}
-                    <div className="flex gap-4">
-                        {socialLinks.map((social, index) => (
-                            <a
-                                key={index}
-                                href={social.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label={social.name}
-                                className="w-10 h-10 flex items-center justify-center bg-[#e8dfd3] rounded-full text-[#2a2a2a]
-                  hover:bg-gold-500 hover:text-white hover:-translate-y-1 transition-all duration-300"
-                            >
-                                {social.icon}
-                            </a>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Divider */}
-                <div className="h-px bg-[#e8dfd3] mb-6 md:mb-8" />
-
-                {/* Copyright */}
-                <div className="text-center">
-                    <p className="text-[#8a8a8a] text-[0.85rem] mb-2">
-                        <span className="font-[var(--font-display)] text-[1rem] text-[#2a2a2a] font-medium">PITTURA</span>
-                        {' '}by Sandhiya
-                    </p>
-                    <p className="text-[#8a8a8a] text-[0.85rem]">
-                        © 2025 All rights reserved.
-                    </p>
                 </div>
             </div>
+
+            <style>{`
+                .footer-wave-container {
+                    position: relative;
+                    width: 100%;
+                    overflow: hidden;
+                    line-height: 0;
+                }
+
+                .footer-wave {
+                    display: block;
+                    width: 100%;
+                    height: 80px;
+                    transform-origin: bottom center;
+                }
+
+                @media (min-width: 768px) {
+                    .footer-wave {
+                        height: 120px;
+                    }
+                }
+
+                .footer-wave-path {
+                    filter: drop-shadow(0 -4px 6px rgba(0, 0, 0, 0.1));
+                }
+
+                .footer-wave-noise {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+                    opacity: 0.03;
+                    mix-blend-mode: overlay;
+                    pointer-events: none;
+                }
+
+                .footer-content {
+                    position: relative;
+                    margin-top: -1px;
+                }
+            `}</style>
         </footer>
     );
 };

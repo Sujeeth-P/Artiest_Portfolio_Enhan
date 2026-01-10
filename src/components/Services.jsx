@@ -631,7 +631,7 @@ const Services = () => {
                 /* Bottom CTA Section - No box, clean layout */
                 .services-cta-section {
                     text-align: center;
-                    padding: 100px 40px;
+                    padding: 200px 40px;
                     background: #fcf7e7;
                     max-width: 1000px;
                     margin: 0 auto;
