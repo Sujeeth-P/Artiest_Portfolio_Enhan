@@ -6,6 +6,7 @@ import {
     useState,
 } from 'react';
 import { motion } from 'framer-motion';
+import gsap from 'gsap';
 
 const ScrollExpandMedia = ({
     mediaType = 'video',
@@ -23,6 +24,11 @@ const ScrollExpandMedia = ({
     const [mediaFullyExpanded, setMediaFullyExpanded] = useState(false);
     const [touchStartY, setTouchStartY] = useState(0);
     const [isMobileState, setIsMobileState] = useState(false);
+
+    // Cinematic animation states
+    const [cinematicPhase, setCinematicPhase] = useState('initial'); // 'initial', 'visible', 'fading', 'done'
+    const fullscreenBgRef = useRef(null);
+    const vignetteOverlayRef = useRef(null);
 
     const sectionRef = useRef(null);
 
@@ -134,6 +140,52 @@ const ScrollExpandMedia = ({
         return () => window.removeEventListener('resize', checkIfMobile);
     }, []);
 
+    // Cinematic background reveal and fade-out animation
+    useEffect(() => {
+        const fullscreenBg = fullscreenBgRef.current;
+        const vignetteOverlay = vignetteOverlayRef.current;
+
+        if (!fullscreenBg || !vignetteOverlay || cinematicPhase !== 'initial') return;
+
+        // Set initial states - background starts fully visible
+        gsap.set(fullscreenBg, { opacity: 1 });
+        gsap.set(vignetteOverlay, {
+            opacity: 1,
+            '--vignette-size': '60%',
+            '--vignette-intensity': '0.8'
+        });
+
+        setCinematicPhase('visible');
+
+        // Create the cinematic timeline
+        const cinematicTl = gsap.timeline({
+            delay: 1.0, // Brief pause to let the image be fully visible and appreciated
+            onComplete: () => {
+                setCinematicPhase('done');
+            }
+        });
+
+        // Background fade-out - slow, elegant, and cinematic
+        cinematicTl.to(fullscreenBg, {
+            opacity: 0,
+            duration: 2.8,
+            ease: 'power2.inOut'
+        });
+
+        // Vignette shrinks and fades organically - synchronized
+        cinematicTl.to(vignetteOverlay, {
+            '--vignette-size': '25%',
+            '--vignette-intensity': '0',
+            opacity: 0,
+            duration: 3.0,
+            ease: 'power1.inOut'
+        }, '<'); // Start at same time as background fade
+
+        return () => {
+            cinematicTl.kill();
+        };
+    }, [cinematicPhase]);
+
     const mediaWidth = 300 + scrollProgress * (isMobileState ? 650 : 1250);
     const mediaHeight = 400 + scrollProgress * (isMobileState ? 200 : 400);
     const textTranslateX = scrollProgress * (isMobileState ? 180 : 150);
@@ -148,11 +200,14 @@ const ScrollExpandMedia = ({
         >
             <section className='relative flex flex-col items-center justify-start min-h-[100dvh]'>
                 <div className='relative w-full flex flex-col items-center min-h-[100dvh]'>
-                    <motion.div
-                        className='absolute inset-0 z-0 h-full'
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 - scrollProgress }}
-                        transition={{ duration: 0.1 }}
+                    {/* Cinematic Full-Screen Background with Fade Effect */}
+                    <div
+                        ref={fullscreenBgRef}
+                        className='absolute inset-0 z-0 h-full pointer-events-none'
+                        style={{
+                            opacity: cinematicPhase === 'done' ? 0 : 1,
+                            willChange: 'opacity'
+                        }}
                     >
                         <img
                             src={bgImageSrc}
@@ -164,11 +219,26 @@ const ScrollExpandMedia = ({
                             }}
                         />
                         <div className='absolute inset-0 bg-black/10' />
-                        {/* Center vignette - fade to black on background */}
-                        <div className='absolute inset-0' style={{
-                            background: 'radial-gradient(ellipse 40% 50% at center 45%, rgba(0, 0, 0, 0.9) 1%, rgba(0, 0, 0, 0.7) 40%, rgba(0, 0, 0, 0.4) 55%, transparent 100%)'
-                        }} />
-                    </motion.div>
+                    </div>
+
+                    {/* Cinematic Vignette Overlay - Shrinks organically toward center (WHITE) */}
+                    <div
+                        ref={vignetteOverlayRef}
+                        className='absolute inset-0 z-[1] pointer-events-none cinematic-vignette-overlay'
+                        style={{
+                            '--vignette-size': '60%',
+                            '--vignette-intensity': '0.9',
+                            background: `radial-gradient(
+                                ellipse var(--vignette-size) var(--vignette-size) at center,
+                                transparent 0%,
+                                rgba(255, 255, 255, calc(var(--vignette-intensity) * 0.4)) 50%,
+                                rgba(255, 255, 255, calc(var(--vignette-intensity) * 0.7)) 75%,
+                                rgba(255, 255, 255, var(--vignette-intensity)) 100%
+                            )`,
+                            opacity: cinematicPhase === 'done' ? 0 : 1,
+                            willChange: 'opacity, background'
+                        }}
+                    />
 
                     <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
                         <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative'>
@@ -333,6 +403,25 @@ const ScrollExpandMedia = ({
                     </div>
                 </div>
             </section>
+
+            {/* Styles for cinematic vignette animation (WHITE) */}
+            <style>{`
+                .cinematic-vignette-overlay {
+                    transition: background 0.5s linear;
+                }
+                
+                @supports (background: radial-gradient(ellipse 60% 60% at center, transparent 0%, white 100%)) {
+                    .cinematic-vignette-overlay {
+                        background: radial-gradient(
+                            ellipse var(--vignette-size, 60%) var(--vignette-size, 60%) at center,
+                            transparent 0%,
+                            rgba(255, 255, 255, calc(var(--vignette-intensity, 0.9) * 0.4)) 50%,
+                            rgba(255, 255, 255, calc(var(--vignette-intensity, 0.9) * 0.7)) 75%,
+                            rgba(255, 255, 255, var(--vignette-intensity, 0.9)) 100%
+                        );
+                    }
+                }
+            `}</style>
         </div>
     );
 };
