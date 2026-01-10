@@ -1,21 +1,103 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
-gsap.registerPlugin(ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const FixedCTA = () => {
+    const ctaRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
 
+    // Basic visibility on scroll
     useEffect(() => {
         const handleScroll = () => {
-            // Show CTA after scrolling past 300px
             setIsVisible(window.scrollY > 300);
         };
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Hide CTA in About, Contact, and Footer sections
+    useEffect(() => {
+        const ctaButton = ctaRef.current;
+        if (!ctaButton) return;
+
+        const timer = setTimeout(() => {
+            const aboutSection = document.querySelector('#about');
+            const contactSection = document.querySelector('#contact');
+            const footerSection = document.querySelector('footer');
+
+            const ctx = gsap.context(() => {
+                // Hide when entering About section
+                if (aboutSection) {
+                    ScrollTrigger.create({
+                        trigger: aboutSection,
+                        start: "top 80%",
+                        end: "bottom 20%",
+                        onEnter: () => {
+                            gsap.to(ctaButton, {
+                                opacity: 0,
+                                scale: 0.8,
+                                y: 20,
+                                duration: 0.3,
+                                ease: "power2.in",
+                                onComplete: () => {
+                                    gsap.set(ctaButton, { visibility: 'hidden' });
+                                }
+                            });
+                        },
+                        onLeaveBack: () => {
+                            gsap.set(ctaButton, { visibility: 'visible' });
+                            gsap.to(ctaButton, {
+                                opacity: 1,
+                                scale: 1,
+                                y: 0,
+                                duration: 0.3,
+                                ease: "power2.out"
+                            });
+                        }
+                    });
+                }
+
+                // Keep hidden in Contact section
+                if (contactSection) {
+                    ScrollTrigger.create({
+                        trigger: contactSection,
+                        start: "top 80%",
+                        end: "bottom 20%",
+                        onEnter: () => {
+                            gsap.set(ctaButton, { visibility: 'hidden', opacity: 0 });
+                        },
+                        onLeaveBack: () => {
+                            // Still hidden (in About section)
+                            gsap.set(ctaButton, { visibility: 'hidden', opacity: 0 });
+                        }
+                    });
+                }
+
+                // Keep hidden in Footer section
+                if (footerSection) {
+                    ScrollTrigger.create({
+                        trigger: footerSection,
+                        start: "top 80%",
+                        onEnter: () => {
+                            gsap.set(ctaButton, { visibility: 'hidden', opacity: 0 });
+                        },
+                        onLeaveBack: () => {
+                            // Still hidden (in Contact section)
+                            gsap.set(ctaButton, { visibility: 'hidden', opacity: 0 });
+                        }
+                    });
+                }
+            });
+
+            return () => ctx.revert();
+        }, 500);
+
+        return () => clearTimeout(timer);
     }, []);
 
     const scrollToContact = (e) => {
@@ -36,6 +118,7 @@ const FixedCTA = () => {
     return (
         <>
             <a
+                ref={ctaRef}
                 href="#contact"
                 onClick={scrollToContact}
                 onMouseEnter={() => setIsHovered(true)}
@@ -147,7 +230,6 @@ const FixedCTA = () => {
                     }
                 }
 
-                /* Hide when in works section to avoid overlap */
                 @media (max-width: 768px) {
                     .fixed-cta-button {
                         bottom: 80px;

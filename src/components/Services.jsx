@@ -177,7 +177,7 @@ const Services = () => {
 
     // CTA Text Animation (SplitText-like effect)
     useEffect(() => {
-        // Longer delay to ensure all pinned sections are set up
+        // Small delay to ensure DOM is ready after pinned section
         const timer = setTimeout(() => {
             const ctaSection = ctaTextRef.current;
             if (!ctaSection) return;
@@ -187,66 +187,39 @@ const Services = () => {
 
             if (chars.length === 0) return;
 
-            // Set initial state with GSAP - ensure visibility
-            gsap.set(chars, {
-                opacity: 0,
-                y: 30,
-                visibility: 'visible',
-                immediateRender: true
-            });
-            gsap.set(ctaBtn, {
-                opacity: 0,
-                y: 30,
-                visibility: 'visible',
-                immediateRender: true
+            // Set initial state with GSAP
+            gsap.set(chars, { opacity: 0, y: 30, immediateRender: true });
+            gsap.set(ctaBtn, { opacity: 0, y: 30, immediateRender: true });
+
+            // Create scroll trigger for animation
+            ScrollTrigger.create({
+                trigger: ctaSection,
+                start: "top 85%",
+                // markers: true,
+                onEnter: () => {
+                    // Animate characters with stagger
+                    gsap.to(chars, {
+                        opacity: 1,
+                        y: 0,
+                        stagger: 0.015,
+                        duration: 0.4,
+                        ease: "power2.out",
+                        onComplete: () => {
+                            // Animate button after text
+                            gsap.to(ctaBtn, {
+                                opacity: 1,
+                                y: 0,
+                                duration: 0.5,
+                                ease: "back.out(1.5)"
+                            });
+                        }
+                    });
+                }
             });
 
-            // Refresh ScrollTrigger to recalculate positions after all pins
-            ScrollTrigger.refresh(true);
-
-            // Create scroll trigger for animation with a slight delay
-            setTimeout(() => {
-                ScrollTrigger.create({
-                    trigger: ctaSection,
-                    start: "top 90%",
-                    // markers: true, // Uncomment for debugging
-                    onEnter: () => {
-                        // Animate characters with stagger
-                        gsap.to(chars, {
-                            opacity: 1,
-                            y: 0,
-                            stagger: 0.012,
-                            duration: 0.35,
-                            ease: "power2.out",
-                            onComplete: () => {
-                                // Animate button after text
-                                gsap.to(ctaBtn, {
-                                    opacity: 1,
-                                    y: 0,
-                                    duration: 0.5,
-                                    ease: "back.out(1.5)"
-                                });
-                            }
-                        });
-                    },
-                    onLeaveBack: () => {
-                        // Reset animation when scrolling back up
-                        gsap.to(chars, {
-                            opacity: 0,
-                            y: 30,
-                            duration: 0.2,
-                            ease: "power2.in"
-                        });
-                        gsap.to(ctaBtn, {
-                            opacity: 0,
-                            y: 30,
-                            duration: 0.2,
-                            ease: "power2.in"
-                        });
-                    }
-                });
-            }, 200);
-        }, 500); // Increased delay for pinned sections to initialize
+            // Refresh ScrollTrigger after pinned sections
+            ScrollTrigger.refresh();
+        }, 100);
 
         return () => clearTimeout(timer);
     }, []);
