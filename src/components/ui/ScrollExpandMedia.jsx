@@ -30,6 +30,9 @@ const ScrollExpandMedia = ({
     const [cinematicPhase, setCinematicPhase] = useState('initial'); // 'initial', 'visible', 'fading', 'done'
     const fullscreenBgRef = useRef(null);
     const fadeOverlayRef = useRef(null);
+    const hasStartedFadeRef = useRef(false); // Track if fade has started
+    const fadeTimelineRef = useRef(null); // Store the timeline
+    const titleTextRef = useRef(null); // Title text for color animation
 
     const sectionRef = useRef(null);
 
@@ -144,47 +147,69 @@ const ScrollExpandMedia = ({
     // Cinematic background fade-out animation
     // Only triggers AFTER intro animation completes for seamless transition
     useEffect(() => {
+        console.log('Fade effect - introComplete:', introComplete, 'hasStarted:', hasStartedFadeRef.current);
+
+        // Only run when intro is complete and we haven't started yet
+        if (!introComplete || hasStartedFadeRef.current) {
+            console.log('Fade effect - skipping');
+            return;
+        }
+
         const fullscreenBg = fullscreenBgRef.current;
         const fadeOverlay = fadeOverlayRef.current;
 
-        if (!fullscreenBg || !fadeOverlay) return;
+        console.log('Fade effect - refs:', !!fullscreenBg, !!fadeOverlay);
 
-        // Set initial states - background visible, fade overlay transparent
-        gsap.set(fullscreenBg, { opacity: 1 });
-        gsap.set(fadeOverlay, { opacity: 0 });
+        if (!fullscreenBg || !fadeOverlay) {
+            console.log('Fade effect - refs not ready');
+            return;
+        }
 
-        // Wait for intro to complete before starting fade-out
-        if (!introComplete || cinematicPhase !== 'initial') return;
+        // Mark as started using ref (doesn't cause re-render or trigger cleanup)
+        hasStartedFadeRef.current = true;
+        console.log('Fade effect - STARTING ANIMATION!');
 
-        setCinematicPhase('fading');
+        // Set initial states
+        gsap.set(fullscreenBg, { opacity: 1, visibility: 'visible' });
+        gsap.set(fadeOverlay, { opacity: 0, visibility: 'visible' });
 
-        // Create the cinematic timeline - triggers after intro completes
-        const cinematicTl = gsap.timeline({
-            delay: 0.3, // Very brief pause after intro to let user see the full background
+        // Create the cinematic timeline and store in ref
+        fadeTimelineRef.current = gsap.timeline({
+            delay: 0.3,
             onComplete: () => {
+                console.log('Fade effect - ANIMATION COMPLETE!');
                 setCinematicPhase('done');
+                gsap.set(fullscreenBg, { visibility: 'hidden' });
+                gsap.set(fadeOverlay, { visibility: 'hidden' });
             }
         });
 
-        // Background fade-out - slow and gradual (1.75s - between 1.5-2s)
-        // Opacity decreases evenly until the background disappears completely
-        cinematicTl.to(fullscreenBg, {
+        // Background fade-out - slow and gradual (1.75s)
+        fadeTimelineRef.current.to(fullscreenBg, {
             opacity: 0,
             duration: 1.75,
             ease: 'power1.out'
         });
 
-        // Fullscreen fade overlay - fades in with theme color to smoothly reveal content
-        cinematicTl.to(fadeOverlay, {
+        // Fullscreen fade overlay - fades in with theme color
+        fadeTimelineRef.current.to(fadeOverlay, {
             opacity: 1,
             duration: 1.75,
             ease: 'power1.out'
-        }, '<'); // Start at same time as background fade
+        }, '<');
 
-        return () => {
-            cinematicTl.kill();
-        };
-    }, [cinematicPhase, introComplete]);
+        // Text color animation - gradually change from white to black
+        const titleText = titleTextRef.current;
+        if (titleText) {
+            fadeTimelineRef.current.to(titleText.querySelectorAll('h2'), {
+                color: '#1a1a1a', // Dark text color
+                duration: 1.75,
+                ease: 'power1.out'
+            }, '<');
+        }
+
+        // No cleanup - we want the animation to complete!
+    }, [introComplete]);
 
     const mediaWidth = 300 + scrollProgress * (isMobileState ? 650 : 1250);
     const mediaHeight = 400 + scrollProgress * (isMobileState ? 200 : 400);
@@ -201,39 +226,37 @@ const ScrollExpandMedia = ({
             <section className='relative flex flex-col items-center justify-start min-h-[100dvh]'>
                 <div className='relative w-full flex flex-col items-center min-h-[100dvh]'>
                     {/* Cinematic Full-Screen Background with Fade Effect */}
-                    {cinematicPhase !== 'done' && (
-                        <div
-                            ref={fullscreenBgRef}
-                            className='absolute inset-0 z-0 h-full pointer-events-none'
+                    <div
+                        ref={fullscreenBgRef}
+                        className='absolute inset-0 z-0 h-full pointer-events-none'
+                        style={{
+                            willChange: 'opacity',
+                            visibility: cinematicPhase === 'done' ? 'hidden' : 'visible'
+                        }}
+                    >
+                        <img
+                            src={bgImageSrc}
+                            alt='Background'
+                            className='w-screen h-screen'
                             style={{
-                                willChange: 'opacity'
-                            }}
-                        >
-                            <img
-                                src={bgImageSrc}
-                                alt='Background'
-                                className='w-screen h-screen'
-                                style={{
-                                    objectFit: 'cover',
-                                    objectPosition: 'center',
-                                }}
-                            />
-                            <div className='absolute inset-0 bg-black/10' />
-                        </div>
-                    )}
-
-                    {/* Fullscreen Fade Overlay - Fades in with theme color */}
-                    {cinematicPhase !== 'done' && (
-                        <div
-                            ref={fadeOverlayRef}
-                            className='absolute inset-0 z-[1] pointer-events-none'
-                            style={{
-                                backgroundColor: '#fcf7e7', // Site theme cream color
-                                opacity: 0,
-                                willChange: 'opacity'
+                                objectFit: 'cover',
+                                objectPosition: 'center',
                             }}
                         />
-                    )}
+                        <div className='absolute inset-0 bg-black/10' />
+                    </div>
+
+                    {/* Fullscreen Fade Overlay - Fades in with theme color */}
+                    <div
+                        ref={fadeOverlayRef}
+                        className='absolute inset-0 z-[1] pointer-events-none'
+                        style={{
+                            backgroundColor: '#fcf7e7', // Site theme cream color
+                            opacity: 0,
+                            willChange: 'opacity',
+                            visibility: cinematicPhase === 'done' ? 'hidden' : 'visible'
+                        }}
+                    />
 
                     <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
                         <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative'>
@@ -359,6 +382,7 @@ const ScrollExpandMedia = ({
                             )}
 
                             <div
+                                ref={titleTextRef}
                                 className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col mt-4 ${textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
                                     }`}
                             >
