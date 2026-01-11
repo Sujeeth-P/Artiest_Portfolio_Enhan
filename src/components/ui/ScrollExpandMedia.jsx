@@ -201,8 +201,21 @@ const ScrollExpandMedia = ({
         // Text color animation - gradually change from white to black
         const titleText = titleTextRef.current;
         if (titleText) {
-            fadeTimelineRef.current.to(titleText.querySelectorAll('h2'), {
+            // Animate first word (PITTURA) to black
+            fadeTimelineRef.current.to(titleText.querySelector('h2'), {
                 color: '#1a1a1a', // Dark text color
+                duration: 1.75,
+                ease: 'power1.out'
+            }, '<');
+            // Animate middle words (Where The Art) to black
+            fadeTimelineRef.current.to(titleText.querySelector('.middle-text'), {
+                color: '#1a1a1a', // Dark text color
+                duration: 1.75,
+                ease: 'power1.out'
+            }, '<');
+            // Animate the golden 'Speaks' text to a slightly darker gold
+            fadeTimelineRef.current.to(titleText.querySelector('.speaks-text'), {
+                color: '#b8860b', // Darker gold for better contrast on cream
                 duration: 1.75,
                 ease: 'power1.out'
             }, '<');
@@ -216,7 +229,9 @@ const ScrollExpandMedia = ({
     const textTranslateX = scrollProgress * (isMobileState ? 180 : 150);
 
     const firstWord = title ? title.split(' ')[0] : '';
-    const restOfTitle = title ? title.split(' ').slice(1).join(' ') : '';
+    const titleWords = title ? title.split(' ').slice(1) : [];
+    const lastWord = titleWords.length > 0 ? titleWords[titleWords.length - 1] : ''; // 'Speaks'
+    const middleWords = titleWords.slice(0, -1).join(' '); // 'Where The Art'
 
     return (
         <div
@@ -393,10 +408,11 @@ const ScrollExpandMedia = ({
                                     {firstWord}
                                 </motion.h2>
                                 <motion.h2
-                                    className='text-4xl md:text-5xl lg:text-6xl font-bold text-center text-[#fefdfb] transition-none'
+                                    className='text-4xl md:text-5xl lg:text-6xl font-bold text-center transition-none'
                                     style={{ transform: `translateX(${textTranslateX}vw)` }}
                                 >
-                                    {restOfTitle}
+                                    <span className='middle-text text-[#fefdfb]'>{middleWords} </span>
+                                    <span className='speaks-text text-[#c9a961]'>{lastWord}</span>
                                 </motion.h2>
                             </div>
 
