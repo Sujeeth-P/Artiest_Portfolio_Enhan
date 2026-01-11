@@ -39,6 +39,7 @@ const Hero = ({ introComplete = false }) => {
         date={current.date}
         scrollToExpand={current.scrollToExpand}
         textBlend={false}
+        introComplete={introComplete}
       />
     </div>
   );

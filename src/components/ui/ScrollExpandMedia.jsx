@@ -17,6 +17,7 @@ const ScrollExpandMedia = ({
     date,
     scrollToExpand,
     textBlend,
+    introComplete = false,
     children,
 }) => {
     const [scrollProgress, setScrollProgress] = useState(0);
@@ -28,7 +29,7 @@ const ScrollExpandMedia = ({
     // Cinematic animation states
     const [cinematicPhase, setCinematicPhase] = useState('initial'); // 'initial', 'visible', 'fading', 'done'
     const fullscreenBgRef = useRef(null);
-    const vignetteOverlayRef = useRef(null);
+    const fadeOverlayRef = useRef(null);
 
     const sectionRef = useRef(null);
 
@@ -140,51 +141,50 @@ const ScrollExpandMedia = ({
         return () => window.removeEventListener('resize', checkIfMobile);
     }, []);
 
-    // Cinematic background reveal and fade-out animation
+    // Cinematic background fade-out animation
+    // Only triggers AFTER intro animation completes for seamless transition
     useEffect(() => {
         const fullscreenBg = fullscreenBgRef.current;
-        const vignetteOverlay = vignetteOverlayRef.current;
+        const fadeOverlay = fadeOverlayRef.current;
 
-        if (!fullscreenBg || !vignetteOverlay || cinematicPhase !== 'initial') return;
+        if (!fullscreenBg || !fadeOverlay) return;
 
-        // Set initial states - background starts fully visible
+        // Set initial states - background visible, fade overlay transparent
         gsap.set(fullscreenBg, { opacity: 1 });
-        gsap.set(vignetteOverlay, {
-            opacity: 1,
-            '--vignette-size': '60%',
-            '--vignette-intensity': '0.8'
-        });
+        gsap.set(fadeOverlay, { opacity: 0 });
 
-        setCinematicPhase('visible');
+        // Wait for intro to complete before starting fade-out
+        if (!introComplete || cinematicPhase !== 'initial') return;
 
-        // Create the cinematic timeline
+        setCinematicPhase('fading');
+
+        // Create the cinematic timeline - triggers after intro completes
         const cinematicTl = gsap.timeline({
-            delay: 1.0, // Brief pause to let the image be fully visible and appreciated
+            delay: 0.3, // Very brief pause after intro to let user see the full background
             onComplete: () => {
                 setCinematicPhase('done');
             }
         });
 
-        // Background fade-out - slow, elegant, and cinematic
+        // Background fade-out - slow and gradual (1.75s - between 1.5-2s)
+        // Opacity decreases evenly until the background disappears completely
         cinematicTl.to(fullscreenBg, {
             opacity: 0,
-            duration: 2.8,
-            ease: 'power2.inOut'
+            duration: 1.75,
+            ease: 'power1.out'
         });
 
-        // Vignette shrinks and fades organically - synchronized
-        cinematicTl.to(vignetteOverlay, {
-            '--vignette-size': '25%',
-            '--vignette-intensity': '0',
-            opacity: 0,
-            duration: 3.0,
-            ease: 'power1.inOut'
+        // Fullscreen fade overlay - fades in with theme color to smoothly reveal content
+        cinematicTl.to(fadeOverlay, {
+            opacity: 1,
+            duration: 1.75,
+            ease: 'power1.out'
         }, '<'); // Start at same time as background fade
 
         return () => {
             cinematicTl.kill();
         };
-    }, [cinematicPhase]);
+    }, [cinematicPhase, introComplete]);
 
     const mediaWidth = 300 + scrollProgress * (isMobileState ? 650 : 1250);
     const mediaHeight = 400 + scrollProgress * (isMobileState ? 200 : 400);
@@ -201,44 +201,39 @@ const ScrollExpandMedia = ({
             <section className='relative flex flex-col items-center justify-start min-h-[100dvh]'>
                 <div className='relative w-full flex flex-col items-center min-h-[100dvh]'>
                     {/* Cinematic Full-Screen Background with Fade Effect */}
-                    <div
-                        ref={fullscreenBgRef}
-                        className='absolute inset-0 z-0 h-full pointer-events-none'
-                        style={{
-                            opacity: cinematicPhase === 'done' ? 0 : 1,
-                            willChange: 'opacity'
-                        }}
-                    >
-                        <img
-                            src={bgImageSrc}
-                            alt='Background'
-                            className='w-screen h-screen'
+                    {cinematicPhase !== 'done' && (
+                        <div
+                            ref={fullscreenBgRef}
+                            className='absolute inset-0 z-0 h-full pointer-events-none'
                             style={{
-                                objectFit: 'cover',
-                                objectPosition: 'center',
+                                willChange: 'opacity'
+                            }}
+                        >
+                            <img
+                                src={bgImageSrc}
+                                alt='Background'
+                                className='w-screen h-screen'
+                                style={{
+                                    objectFit: 'cover',
+                                    objectPosition: 'center',
+                                }}
+                            />
+                            <div className='absolute inset-0 bg-black/10' />
+                        </div>
+                    )}
+
+                    {/* Fullscreen Fade Overlay - Fades in with theme color */}
+                    {cinematicPhase !== 'done' && (
+                        <div
+                            ref={fadeOverlayRef}
+                            className='absolute inset-0 z-[1] pointer-events-none'
+                            style={{
+                                backgroundColor: '#fcf7e7', // Site theme cream color
+                                opacity: 0,
+                                willChange: 'opacity'
                             }}
                         />
-                        <div className='absolute inset-0 bg-black/10' />
-                    </div>
-
-                    {/* Cinematic Vignette Overlay - Shrinks organically toward center (WHITE) */}
-                    <div
-                        ref={vignetteOverlayRef}
-                        className='absolute inset-0 z-[1] pointer-events-none cinematic-vignette-overlay'
-                        style={{
-                            '--vignette-size': '60%',
-                            '--vignette-intensity': '0.9',
-                            background: `radial-gradient(
-                                ellipse var(--vignette-size) var(--vignette-size) at center,
-                                transparent 0%,
-                                rgba(255, 255, 255, calc(var(--vignette-intensity) * 0.4)) 50%,
-                                rgba(255, 255, 255, calc(var(--vignette-intensity) * 0.7)) 75%,
-                                rgba(255, 255, 255, var(--vignette-intensity)) 100%
-                            )`,
-                            opacity: cinematicPhase === 'done' ? 0 : 1,
-                            willChange: 'opacity, background'
-                        }}
-                    />
+                    )}
 
                     <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
                         <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative'>
@@ -406,24 +401,7 @@ const ScrollExpandMedia = ({
                 </div>
             </section>
 
-            {/* Styles for cinematic vignette animation (WHITE) */}
-            <style>{`
-                .cinematic-vignette-overlay {
-                    transition: background 0.5s linear;
-                }
-                
-                @supports (background: radial-gradient(ellipse 60% 60% at center, transparent 0%, white 100%)) {
-                    .cinematic-vignette-overlay {
-                        background: radial-gradient(
-                            ellipse var(--vignette-size, 60%) var(--vignette-size, 60%) at center,
-                            transparent 0%,
-                            rgba(255, 255, 255, calc(var(--vignette-intensity, 0.9) * 0.4)) 50%,
-                            rgba(255, 255, 255, calc(var(--vignette-intensity, 0.9) * 0.7)) 75%,
-                            rgba(255, 255, 255, var(--vignette-intensity, 0.9)) 100%
-                        );
-                    }
-                }
-            `}</style>
+
         </div>
     );
 };
